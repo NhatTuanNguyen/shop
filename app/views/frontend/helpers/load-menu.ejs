@@ -1,0 +1,39 @@
+<% 
+    isChild = (items,id) => {
+        for(var i = 0; i < items.length; i++) {
+            if (items[i].category.id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    loadMenu = (items,id=1) => {
+        let html='';
+        items.forEach((item) => {
+            if (item.category.id == id) {
+                if(isChild(items,item.id)){
+                    html += `<li><a href="#">${item.name}</a>`;
+                    html += `<ul class="dropdown">`;
+                    html += loadMenu(items,item.id)
+                    html += `</ul>`
+                } else {
+                    if (item.id == '627bd88e350f5cf79affc72c') {
+                        html += `<li><a href="#">${item.name}</a>`;
+                        html += `<ul class="dropdown">`;
+                        generalNewsCategory.forEach((item)=>{
+                            html += `<li><a href="/general-news/${item.slug}">${item.category}</a></li>`
+                        });
+                        html += `</ul>`;
+                    } else if(item.category.id =='627bd870350f5cf79affc717') {
+                        html += `<li><a href="/category/${item.slug}">${item.name}</a>`;
+                    } else {
+                        html += `<li><a href="/${item.slug}">${item.name}</a>`;
+                    }
+                }
+                html += `</li>`
+            };
+        })
+        return html;
+    }
+%> 

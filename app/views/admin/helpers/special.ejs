@@ -1,0 +1,20 @@
+<% 
+    specialHelper = (collection, special, id) => {
+        let xhtmlspecial = '';
+        let icon = '';
+        let link       = systemConfig.prefixAdmin + '/' + collection + '/changeSpecial/' + id + '/' + special ;
+        if(special === "active") {
+            xhtmlspecial = 'btn-success';
+            icon = '<i class="fas fa-check"></i>';
+        }else if (special === "inactive") {
+            xhtmlspecial = 'btn-danger';
+            icon = '<i class="fas fa-minus"></i>';
+        }
+
+        return `<a href="${link}" class="rounded-circle btn btn-sm ${xhtmlspecial} changeSpecial">${icon}</a>`;
+    }
+%>
+
+
+
+

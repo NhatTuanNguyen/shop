@@ -1,0 +1,6 @@
+<% 
+sourceByHelper = (username,time) => {
+    return `<i class="fas fa-user"></i> ${username}<br>
+    <i class="fas fa-clock"></i> ${moment(time).format(systemConfig.formatLongTime)}`;
+}
+%>

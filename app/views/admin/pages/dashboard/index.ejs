@@ -1,0 +1,29 @@
+<%  
+    let arrBox = [
+        {name: 'Category', icon: 'ion-ios-keypad', link: `${systemConfig.prefixAdmin}/category`, total: countItems.category},
+        {name: 'Article', icon: 'fas fa-newspaper', link: `${systemConfig.prefixAdmin}/article`, total: countItems.article},
+        {name: 'Items', icon: 'ion-ios-people', link: `${systemConfig.prefixAdmin}/items`, total: countItems.items},
+        {name: 'Groups', icon: 'fas fa-layer-group', link: `${systemConfig.prefixAdmin}/groups`, total: countItems.groups},
+        {name: 'Users', icon: 'fas fa-users', link: `${systemConfig.prefixAdmin}/users`, total: countItems.users},
+    ];
+
+    let xhtmlBox = '<div class="d-flex flex-wrap">'
+    arrBox.forEach(box => {
+        xhtmlBox += `<div class="col-lg-3 col-6">
+                        <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>${box.total}</h3>
+                                <p>${box.name}</p>
+                            </div>
+                            <div class="icon text-white">
+                                <i class="${box.icon}"></i>
+                            </div>
+                            <a href="${box.link}" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>`;
+    }); 
+    xhtmlBox += '</div>'  
+%>
+
+<%- xhtmlBox %>
+<% include ./list %> 

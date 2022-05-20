@@ -1,0 +1,24 @@
+
+<h3 class="text-center">Feedback</h3>
+<table class="table table-bordered table-hover text-nowrap btn-table mb-0">
+	<thead>
+		<tr>
+			<th class="text-center">Name</th>
+			<th class="text-center">Email</th>
+			<th class="text-center">Subject</th>
+			<th class="text-center">Message</th>
+			<th class="text-center">Time</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% items.forEach( (item, index) => { %>
+		<tr>
+			<td class="text-center"><%= item.name %></td>
+			<td class="text-center"><%= item.email %></td>
+			<td class="text-center"><%= item.subject %></td>
+			<td class="text-center"><%= item.message %></td>
+			<td class="text-center"><%= moment(item.createdTime).format(systemConfig.formatLongTime) %></td>
+		</tr>
+		<% }) %>
+	</tbody>
+</table>

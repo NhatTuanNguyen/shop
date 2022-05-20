@@ -1,0 +1,22 @@
+<% 
+    showMenuUser = (userInfo) => {
+        let linkLogin = systemConfig.prefixBlog + '/auth/login';
+        let linkLogout = systemConfig.prefixBlog + '/auth/logout';
+        let linkAdmin = systemConfig.prefixAdmin + '/dashboard';
+        let xhtml = '';
+        if(Object.keys(userInfo).length > 0) {
+            xhtml += `<li><a href="#">${userInfo.username}</a>
+                    <ul class="dropdown">
+                        <li><a href="${linkLogout}">Logout</a></li>`;
+
+            if(userInfo.username == 'admin') {
+                xhtml += `<li><a href="${linkAdmin}">Admin Control Panel</a></li>`
+            }
+            xhtml += `</ul></li>`
+
+        } else {
+            xhtml += `<li><a href="${linkLogin}">Login</a></li>`;
+        }
+        return xhtml;
+    }
+%> 
