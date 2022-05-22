@@ -180,7 +180,6 @@ $(document).ready(function (e) {
             const arrStatus = link.split("/");
             // const id = arrStatus[3];
             // const currentStatus = arrStatus[4];
-            console.log(changeStatusElement.find('i'));
             $.ajax({
                 type: "get",
                 url: link,
@@ -215,8 +214,44 @@ $(document).ready(function (e) {
         });
     }
 
+    // Change style
+    const changeStyle = (className) => {
+        $(className).click(function (e) {
+            e.preventDefault();
+            const changeStyleElement = $(this);
+            const link = changeStyleElement.attr('href');
+            $.ajax({
+                type: "get",
+                url: link,
+                data: {},
+                dataType: "text",
+                success: function (response) {
+                    if (response == "leftToRight") {
+                        changeStyleElement.attr("href", link.replace('leftToRight', 'rightToLeft'));
+                        changeStyleElement.text('rightToLeft');
+                    } else {
+                        changeStyleElement.attr("href", link.replace('rightToLeft', 'leftToRight'));
+                        changeStyleElement.text('leftToRight');
+
+                    }
+                    Swal.fire({
+                        toast: true,
+                        icon: 'success',
+                        title: 'Cập nhật style thành công',
+                        animation: true,
+                        position: 'top-right',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                    });
+                }
+            });
+        });
+    }
+
     changeStatus('.changeStatus');
     changeStatus('.changeSpecial');
+    changeStyle('.changeStyle');
 
     // Change category or group
     $(".changeType").change(function (e) {
@@ -247,12 +282,21 @@ $(document).ready(function (e) {
         });
     });
 
+    // Preview photo
     $('input[name="thumb"],input[name="logo"],input[name="avatar"]').change(function (event) {
         const output = $(this).closest('div').find('.img-avatar-form')[0];
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
             URL.revokeObjectURL(output.src) // free memory
         }
+    });
+
+    // Event handling submit
+    $(".sm-event").submit(function(){
+        let element = $('[name=thumb]');
+        $(this).remove(element);
+        $(this).append(element);
+        element.css('display','none');
     });
 });
 

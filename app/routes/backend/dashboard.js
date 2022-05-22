@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 
-const itemsModel = require(__path_models + 'items');
 const categoryModel = require(__path_models + 'category');
 const groupsModel = require(__path_models + 'groups');
 const productModel = require(__path_models + 'product');
@@ -12,9 +11,6 @@ router.get('/',async function(req, res, next) {
   let countItems = {};
   let params = {};
   params.objWhere = {};
-  await itemsModel.countItems(params).then((data) => {
-    countItems.items = data
-  });
   await categoryModel.countItems(params).then((data) => {
     countItems.category = data
   });

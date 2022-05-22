@@ -2,12 +2,16 @@
 <% include ./../../helpers/action %>
 <% include ./../../helpers/pagination %>
 <% include ./../../helpers/status %>
+<% include ./../../helpers/style %>
+<% include ./../../helpers/special %>
 <% include ./../../helpers/highlight %>
 <% include ./../../helpers/source-by %>
 <% include ./../../helpers/sort %>
+<% include ./../../helpers/image %>
 <% 
-	const collection = "items";
+	const collection = "banners";
 	const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
+    const folderUpload = './uploads/banners/';
 %>
 
 <%- locals.flash %>
@@ -65,7 +69,8 @@
 							</div>
 						</th>
 						<th class="text-center">#</th>
-						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType,'with:20%') %> 
+						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType) %> 
+                        <th class="text-center">Thumb</th>
                         <%- sortHelper(linkPrefix,'Status','status',params.sortField,params.sortType) %> 
                         <%- sortHelper(linkPrefix,'Ordering','ordering',params.sortField,params.sortType) %> 
                         <th class="text-center">Created</th>
@@ -75,8 +80,8 @@
 				</thead>
 				<tbody>
 					<% if(items.length === 0){ %>
-						<tr><td colspan="8" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
-					<% } %>  
+						<tr><td colspan="9" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
+					<% } %>
 					<% items.forEach( (item, index) => { %>
 					<tr>
 						<td class="text-center">
@@ -90,12 +95,17 @@
 						<td class="text-center" style="white-space: normal;">
 							<%- highlightHelper(item.name, params.keyword) %>
 						</td>
+
+                        <td class="text-center">
+                            <%- imgHelper(folderUpload,item.thumb,'img-avatar-form') %>
+                        </td>
+
 						<td class="text-center position-relative">
 							<%- statusHelper(collection, item.status, item.id) %>
 						</td>
 						
 						<td class="text-center">
-							<input style="width: 72px;" type="number" onclick="changeOrdering(this)" data-link="<%= linkPrefix %>changeOrdering/" 
+							<input style="width: 72px;" type="number" onchange="changeOrdering(this)" data-link="<%= linkPrefix %>changeOrdering/" 
 							data-id = "<%= item.id %>" class="text-center ordering" value="<%= item.ordering %>"/>
 						</td>
 						

@@ -2,16 +2,12 @@
 <% include ./../../helpers/action %>
 <% include ./../../helpers/pagination %>
 <% include ./../../helpers/status %>
-<% include ./../../helpers/style %>
-<% include ./../../helpers/special %>
 <% include ./../../helpers/highlight %>
 <% include ./../../helpers/source-by %>
 <% include ./../../helpers/sort %>
-<% include ./../../helpers/image %>
 <% 
-	const collection = "sliders";
+	const collection = "menulv1";
 	const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
-    const folderUpload = './uploads/sliders/';
 %>
 
 <%- locals.flash %>
@@ -70,9 +66,8 @@
 						</th>
 						<th class="text-center">#</th>
 						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType) %> 
-                        <th class="text-center">Thumb</th>
+						<th class="text-center">Slug</th>
                         <%- sortHelper(linkPrefix,'Status','status',params.sortField,params.sortType) %> 
-                        <%- sortHelper(linkPrefix,'Style','style',params.sortField,params.sortType) %> 
                         <%- sortHelper(linkPrefix,'Ordering','ordering',params.sortField,params.sortType) %> 
                         <th class="text-center">Created</th>
                         <th class="text-center">Modified</th>
@@ -97,16 +92,10 @@
 							<%- highlightHelper(item.name, params.keyword) %>
 						</td>
 
-                        <td class="text-center">
-                            <%- imgHelper(folderUpload,item.thumb,'img-avatar-form') %>
-                        </td>
+						<td class="text-center"><%= item.slug %></td>
 
 						<td class="text-center position-relative">
 							<%- statusHelper(collection, item.status, item.id) %>
-						</td>
-
-						<td class="text-center position-relative">
-							<%- styleHelper(collection, item.style, item.id) %>
 						</td>
 						
 						<td class="text-center">

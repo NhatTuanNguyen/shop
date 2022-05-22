@@ -1,7 +1,7 @@
-var Model = require(__path_schemas + 'sliders');
+var Model = require(__path_schemas + 'banners');
 var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
 const fileHelper = require(__path_helpers + 'file');
-const folderUpload = 'public/uploads/sliders/';
+const folderUpload = 'public/uploads/banners/';
 
 module.exports = {
     listItems: (params) => {
@@ -20,9 +20,9 @@ module.exports = {
 
     listItemsFrontend: (params = null,options = null) => {
         let find ={status: 'active'};
-        let select = 'name title description link thumb style link';
+        let select = 'thumb';
         let sort = {ordering: 'asc'}
-        let limit = 10;
+        let limit = 4;
 
         return Model.find(find).select(select).limit(limit).sort(sort);
     },
@@ -58,24 +58,6 @@ module.exports = {
             return Model.updateOne({ _id: id }, data);
         } else if (options == 'updateMutiple') {
             data.status = currentStatus
-            return Model.updateMany({ _id: { $in: id } }, data);
-        }
-    },
-
-    changeStyle: (currentStyle, id, options = 'updateOne') => {
-        let style = currentStyle === 'leftToRight' ? 'rightToLeft' : 'leftToRight';
-        let data = {
-            style: style,
-            modified: {
-                user_id: 0,
-                user_name: 'admin',
-                time: Date.now(),
-            }
-        }
-        if (options == 'updateOne') {
-            return Model.updateOne({ _id: id }, data);
-        } else if (options == 'updateMutiple') {
-            data.style = currentStyle
             return Model.updateMany({ _id: { $in: id } }, data);
         }
     },
@@ -131,10 +113,6 @@ module.exports = {
         } else if (options == 'edit') {
             return Model.updateOne({ _id: item.id }, {
                 name: item.name,
-                title: item.title,
-                description: item.description,
-                link: item.link,
-                style: item.style,
                 status: item.status,
                 ordering: parseInt(item.ordering),
                 slug: convertToSlugHelper.convertToSlug(item.slug),

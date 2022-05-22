@@ -17,14 +17,6 @@ module.exports = {
         req.checkBody('name', util.format(notify.ERROR_NAME, options.name.min, options.name.max) )
             .isLength({ min: options.name.min, max: options.name.max });
 
-        // Title
-        req.checkBody('title', util.format(notify.ERROR_NAME, options.title.min, options.title.max) )
-            .isLength({ min: options.title.min, max: options.title.max });
-        
-        // Description
-        req.checkBody('description', util.format(notify.ERROR_NAME, options.description.min, options.description.max) )
-            .isLength({ min: options.description.min, max: options.description.max });    
-
         // ORDERING
         req.checkBody('ordering', util.format(notify.ERROR_ORDERING, options.ordering.min))
             .isInt({gt: options.ordering.min});
@@ -33,16 +25,9 @@ module.exports = {
         req.checkBody('slug', notify.ERROR_GROUPACP)
             .notEmpty();    
 
-        // Link
-        req.checkBody('link', notify.ERROR_GROUPACP)
-            .notEmpty();
-
         // STATUS
         req.checkBody('status', notify.ERROR_STATUS)
             .isNotEqual(options.status.value);
-        // STATUS
-        req.checkBody('style', notify.ERROR_NOTEMPTY)
-            .isNotEqual(options.style.value);
 
         let errors = req.validationErrors() !== false ? req.validationErrors() : [];
         if (errUpload) {

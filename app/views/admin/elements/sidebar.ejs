@@ -68,15 +68,50 @@
                 </li>
                 <li>
                     <a href="<%= systemConfig.prefixAdmin %>/sliders" class="nav-link ">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="fas fa-sliders-h"></i>
                         <p>Sliders</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="<%= systemConfig.prefixAdmin %>/banners" class="nav-link ">
+                        <i class="far fa-image"></i>
+                        <p>Banners</p>
                     </a>
                 </li>
                 <li class="nav-item menu-is-opening">
                     <a href="#" class="nav-link ">
-                        <i class="fas fa-newspaper"></i>
+                        <i class="fas fa-bars"></i>
                         <p>
-                            Manage items
+                            Category
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="<%= systemConfig.prefixAdmin %>/menulv1" class="nav-link ">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MenuLv1</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<%= systemConfig.prefixAdmin %>/menulv2" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MenuLv2</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<%= systemConfig.prefixAdmin %>/menulv3" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>MenuLv3</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item menu-is-opening">
+                    <a href="#" class="nav-link ">
+                        <i class="fas fa-tshirt"></i>
+                        <p>
+                            Manage products
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
@@ -91,12 +126,6 @@
                             <a href="<%= systemConfig.prefixAdmin %>/product" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Product</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="<%= systemConfig.prefixAdmin %>/items" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Items</p>
                             </a>
                         </li>
                     </ul>

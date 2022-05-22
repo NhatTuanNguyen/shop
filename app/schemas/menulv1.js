@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema({ 
     name: String,
+    slug: String,
     status: String,
     ordering: Number,
-    content: String,
     created: {
         user_id: Number, 
         user_name: String,
@@ -16,4 +16,4 @@ const schema = new mongoose.Schema({
         time: Date,
     }
 });
-module.exports = mongoose.model('items', schema);
+module.exports = mongoose.model('menulv1', schema);

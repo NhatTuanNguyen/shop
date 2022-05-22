@@ -1,19 +1,28 @@
-var Model = require(__path_schemas + 'items');
+var Model = require(__path_schemas + 'menulv1');
+var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
 
 module.exports = {
     listItems: (params) => {
-
         let objWhere = {};
         if (params.currentStatus !== 'all') objWhere.status = params.currentStatus;
         if (params.keyword !== "") objWhere.name = new RegExp(params.keyword, 'i');
         let sort = {};
         sort[params.sortField] = params.sortType;
-
+        
         return Model
             .find(objWhere)
             .limit(params.paginations.totalItemPerPage)
             .sort(sort)
             .skip((params.paginations.currentPage - 1) * params.paginations.totalItemPerPage)
+    },
+
+    listItemsFrontend: (params = null,options = null) => {
+        let find ={status: 'active'};
+        let select = 'id name slug';
+        let sort = {ordering: 'asc'}
+        let limit = 4;
+
+        return Model.find(find).select(select).limit(limit).sort(sort);
     },
 
     getItems: (id) => {
@@ -55,17 +64,6 @@ module.exports = {
                 time: Date.now(),
             }
         }
-
-        // if (Array.isArray(cids)) {
-        //     for (let i = 0; i < cids.length; i++) {
-        //         data.ordering = parseInt(orderings[i]);
-        //         await Model.updateOne({ _id: cids[i] }, data);
-        //     }
-        //     return Promise.resolve('success');
-        // } else {
-        //     return Model.updateOne({ _id: cids }, data);
-        // }
-
         return Model.updateOne({ _id: cids }, data);
     },
 
@@ -85,7 +83,8 @@ module.exports = {
                 user_id: 0,
                 user_name: 'admin',
                 time: Date.now(),
-            }
+            };
+            item.slug = convertToSlugHelper.convertToSlug(item.slug);
             return new Model(item).save();
 
         } else if (options == 'edit') {
@@ -93,7 +92,7 @@ module.exports = {
                 name: item.name,
                 status: item.status,
                 ordering: parseInt(item.ordering),
-                content: item.content,
+                slug: convertToSlugHelper.convertToSlug(item.slug),
                 modified: {
                     user_id: 0,
                     user_name: 'admin',

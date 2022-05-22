@@ -1,0 +1,11 @@
+<% 
+    styleHelper = (collection, style, id) => {
+        let link = systemConfig.prefixAdmin + '/' + collection + '/change-style/' + id + '/' + style ;
+
+        return `<a href="${link}" class="rounded-circle btn btn-sm btn-secondary changeStyle">${style}</a>`;
+    }
+%>
+ 
+
+
+
