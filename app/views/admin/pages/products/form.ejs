@@ -2,9 +2,9 @@
 <% include ./../../helpers/image %>
 
 <% 
-	const collection = "article";
+	const collection = "products";
 	const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
-	const folderUpload = './uploads/article/' ;
+	const folderUpload = './uploads/products/' ;
 %>
 
 <% include ./../../elements/error %>
@@ -34,6 +34,20 @@
 			</div>
 
 			<div class="form-group row">
+				<label for="price" class="col-sm-2 col-form-label text-sm-right required">Price</label>
+				<div class="col-xs-12 col-sm-8">
+					<input type="number" name="price" step="0.01" value="<%= item.price %>" class="form-control form-control-sm">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="reduce_price" class="col-sm-2 col-form-label text-sm-right required">Reduce Price</label>
+				<div class="col-xs-12 col-sm-8">
+					<input type="number" name="reduce_price" step="0.01" value="<%= item.reduce_price %>" class="form-control form-control-sm">
+				</div>
+			</div>
+
+			<div class="form-group row">
 				<label for="thumb" class="col-sm-2 col-form-label text-sm-right required">Thumb</label>
 				<div class="col-xs-12 col-sm-8">
 					<input type="file"  name="thumb" class="form-control form-control-sm">
@@ -57,31 +71,31 @@
 				<label for="special" class="col-sm-2 col-form-label text-sm-right">Special</label>
 				<div class="col-xs-12 col-sm-8">
 					<select name="special" class="custom-select custom-select-sm">
-						<option value="novalue">Choose special</option>
-						<option value="active" <%= (item.special == "active") ? 'selected="selected"' : '' %> >Top post</option>
-						<option value="inactive" <%= (item.special == "inactive") ? 'selected="selected"' : '' %> >Normal</option>
+						<option value="novalue">Choose Special</option>
+						<option value="active" <%= (item.special == "active") ? 'selected="selected"' : '' %> >Active</option>
+						<option value="inactive" <%= (item.special == "inactive") ? 'selected="selected"' : '' %> >Inactive</option>
 					</select>
 				</div>
 			</div>
 			<div class="form-group row">
 				<label for="category" class="col-sm-2 col-form-label text-sm-right required">Category</label>
 				<div class="col-xs-12 col-sm-8">
-                    <%- selecBoxHelper('category_id',params.categoryItems,item.category_id) %>
+                    <%- selecBoxHelper('menulv3',params.menulv3Items,item.menulv3[0]) %>
 				</div>
 			</div>
             <div class="form-group row">
-				<label for="content" class="col-sm-2 col-form-label text-sm-right required">Content</label>
+				<label for="description" class="col-sm-2 col-form-label text-sm-right required">Description</label>
 				<div class="col-xs-12 col-sm-8">
-					<textarea class="form-control" name="content" rows="2"
-                    id="content_ck"><%= item.content %> </textarea>
+					<textarea class="form-control" name="description" rows="2"
+                    id="description_ck"><%= item.description %> </textarea>
 				</div>
 			</div>
 		</div>
 		<div class="card-footer">
 			<div class="col-12 col-sm-8 offset-sm-2">
+				<input class="form-control" id="name_menulv3" name="menulv3" value="<%= item.menulv3[1] %>" type="hidden">
 				<input class="form-control" name="id" value="<%= item.id %>" type="hidden" >
 				<input name="image_old" value="<%= item.thumb %>" type="hidden">
-                <input class="form-control" name="category_name" value="<%= item.category_name %>" type="hidden">
 				<button type="submit" class="btn btn-sm btn-success mr-1"> Submit</button>
 				<a href="<%= linkPrefix %>" class="btn btn-sm btn-danger mr-1"> Cancel</a>
 			</div>

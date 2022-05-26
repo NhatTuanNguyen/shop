@@ -1,19 +1,36 @@
 <% 
-selecBoxHelper = (name,categoryItems,optionSelected="",keyword,addClass='',collection='',idItem='') => {
+selecBoxHelper = (name,categoryItems,optionSelected="",keyword,addClass='',collection='',idItem='',removeFirstElement) => {
     const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
     let xhtml = "";
+    let menulv1;
     let key;
     if(keyword !== "" && keyword !== undefined) key = '?keyword=' + keyword;
 
-    categoryItems.forEach((item) => {
-        let selected = (item.id == optionSelected) ? 'selected="selected"' : '';
-        let id = (item.id == undefined) ? 'novalue':item.id;
-        if (item.id !== idItem) xhtml += `<option value="${id}" ${selected}>${item.name}</option>`
-    });
+    for(let i = 0; i<categoryItems.length; i++) {
+        if(removeFirstElement && i==0) continue;
+        let selected = (categoryItems[i].id == optionSelected) ? 'selected="selected"' : '';
+        let id = (categoryItems[i].id == undefined) ? 'novalue':categoryItems[i].id;
+        if(categoryItems[i].menulv1 == undefined){
+            if (categoryItems[i].id !== idItem) xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`
+        } else {
+            if(i ==0) {
+                menulv1 =categoryItems[0].menulv1[1];
+                xhtml += `<optgroup value="${menulv1}" label="${menulv1}">`;
+            } 
+            if(categoryItems[i].menulv1[1] == menulv1) {
+                if (categoryItems[i].id !== idItem) xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+            } else {
+                xhtml += `<optgroup value="${categoryItems[i].menulv1[1]}" label="${categoryItems[i].menulv1[1]}">`;
+                if (categoryItems[i].id !== idItem) xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+                
+                menulv1 = categoryItems[i].menulv1[1]
+            }
+        }
+    };
     
     if(collection == ''){
-        return `<select data-keyword="${key}" name="${name}" class="form-control">${xhtml}</select>`;
+        return `<select data-keyword="${key}" name="${name}" class="custom-select custom-select-sm">${xhtml}</select>`;
     }
-    return `<select data-link="${linkPrefix}" data-id="${idItem}" name="${name}" class="form-control ${addClass}">${xhtml}</select>`;
+    return `<select data-link="${linkPrefix}" data-id="${idItem}" name="${name}" class="custom-select custom-select-sm ${addClass}">${xhtml}</select>`;
 }
 %>

@@ -2,16 +2,13 @@
 <% include ./../../helpers/action %>
 <% include ./../../helpers/pagination %>
 <% include ./../../helpers/status %>
-<% include ./../../helpers/special %>
 <% include ./../../helpers/highlight %>
 <% include ./../../helpers/source-by %>
-<% include ./../../helpers/sort %>
-<% include ./../../helpers/image %>
 <% include ./../../helpers/select-box %>
+<% include ./../../helpers/sort %>
 <% 
-	const collection = "article";
+	const collection = "menulv3";
 	const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
-    const folderUpload = './uploads/article/';
 %>
 
 <%- locals.flash %>
@@ -28,11 +25,9 @@
 			<div class="mb-1">
 				<%- filterStatusHelper(collection, statusFilter, params.keyword) %>	 
 			</div>
-			
 			<div class="col-sm-2">
-                <%- selecBoxHelper('filter_category',params.categoryItems,params.categoryId,params.keyword) %>
+                <%- selecBoxHelper('filter_category',params.menulv2Items,params.categoryId,params.keyword) %>
 			</div>
-			
 			<div class="mb-1">
 				<form action="<%= linkPrefix %>status/<%= params.currentStatus %>" method="GET">
 					<div class="input-group">
@@ -74,11 +69,10 @@
 						</th>
 						<th class="text-center">#</th>
 						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType) %> 
-                        <th class="text-center">Thumb</th>
+						<th class="text-center">Slug</th>
                         <%- sortHelper(linkPrefix,'Status','status',params.sortField,params.sortType) %> 
-                        <%- sortHelper(linkPrefix,'Special','special',params.sortField,params.sortType) %> 
                         <%- sortHelper(linkPrefix,'Ordering','ordering',params.sortField,params.sortType) %> 
-                        <%- sortHelper(linkPrefix,'Category','category.name',params.sortField,params.sortType) %> 
+						<%- sortHelper(linkPrefix,'Menulv2','menulv2',params.sortField,params.sortType) %> 
                         <th class="text-center">Created</th>
                         <th class="text-center">Modified</th>
 						<th class="text-center">Action</th>
@@ -86,7 +80,7 @@
 				</thead>
 				<tbody>
 					<% if(items.length === 0){ %>
-						<tr><td colspan="8" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
+						<tr><td colspan="10" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
 					<% } %>
 					<% items.forEach( (item, index) => { %>
 					<tr>
@@ -102,28 +96,20 @@
 							<%- highlightHelper(item.name, params.keyword) %>
 						</td>
 
-                        <td class="text-center">
-                            <%- imgHelper(folderUpload,item.thumb,'img-avatar-form') %>
-                        </td>
+						<td class="text-center"><%= item.slug %></td>
 
 						<td class="text-center position-relative">
 							<%- statusHelper(collection, item.status, item.id) %>
-						</td>
-
-						<td class="text-center position-relative">
-							<%- specialHelper(collection, item.special, item.id) %>
 						</td>
 						
 						<td class="text-center">
 							<input style="width: 72px;" type="number" onchange="changeOrdering(this)" data-link="<%= linkPrefix %>changeOrdering/" 
 							data-id = "<%= item.id %>" class="text-center ordering" value="<%= item.ordering %>"/>
 						</td>
-
-                        <td class="text-center">
+						<td class="text-center">
 							<%# params.categoryItems.shift() %>
-							<%- selecBoxHelper('',params.categoryItems,item.category.id,'','changeType',collection,item.id) %>
+							<%- selecBoxHelper('',params.menulv2Items,item.menulv2[0],'','changeType',collection,item.id,1) %>
 						</td>
-						
 						<td class="text-center">
 							<%- sourceByHelper(item.created.user_name,item.created.time)%>
 						</td>

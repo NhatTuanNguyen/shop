@@ -3,31 +3,29 @@ var express = require('express');
 var router = express.Router();
 
 const util = require('util');
-var productModel = require(__path_models + 'product');
-var categoryModel = require(__path_models + 'category');
-const validatorProduct = require(__path_validators + 'product');
+var menulv1Model = require(__path_models + 'menulv1');
+var menulv2Model = require(__path_models + 'menulv2');
+const validatorMenulv2 = require(__path_validators + 'menulv2');
 const ultilsHelper = require(__path_helpers + 'ultils');
 const paramsHelper = require(__path_helpers + 'params');
-const fileHelper = require(__path_helpers + 'file');
 var systemConfig = require(__path_configs + 'system');
 var notify = require(__path_configs + 'notify');
-let linkIndex = `/${systemConfig.prefixAdmin}/product`;
+let linkIndex = `/${systemConfig.prefixAdmin}/menulv2`;
 
-const pageTitleIndex = 'Product Management';
+const pageTitleIndex = 'menulv2 Management';
 const pageTitleAdd = pageTitleIndex + ' - Add';
 const pageTitleEdit = pageTitleIndex + ' - Edit';
-const folderView = __path_views_admin + 'pages/product/';
-uploadThumb = fileHelper.upload('thumb', 'product');
+const folderView = __path_views_admin + 'pages/menulv2/';
 
-/* GET product listing. */
+/* GET menulv2 listing. */
 router.get('(/status/:status)?', async (req, res, next) => {
   let params = {};
   params.keyword = paramsHelper.getParams(req.query, 'keyword', "");
   params.currentStatus = paramsHelper.getParams(req.params, 'status', 'all');
-  params.sortField = paramsHelper.getParams(req.session, 'sort_field', 'ordering');
+  params.sortField = paramsHelper.getParams(req.session, 'sort_field', 'name');
   params.sortType = paramsHelper.getParams(req.session, 'sort_type', 'asc');
-  params.categoryId = paramsHelper.getParams(req.session, 'category_id', 'novalue');
-  let statusFilter = await ultilsHelper.createFilterStatus(params, 'product');
+  params.categoryId = paramsHelper.getParams(req.session, 'menulv1_id', 'novalue');
+  let statusFilter = await ultilsHelper.createFilterStatus(params, 'menulv2','menulv1');
 
   params.paginations = {
     totalItems: 1,
@@ -36,18 +34,18 @@ router.get('(/status/:status)?', async (req, res, next) => {
     pageRanges: 3,
   };
 
-
-  await categoryModel.listItemsCategoryProduct().then((items) => {
-    params.categoryItems = items;
-    params.categoryItems.unshift({ _id: '', name: 'All category' })
-  });
-
   params.paginations.currentPage = parseInt(paramsHelper.getParams(req.query, 'page', 1));
 
-  await productModel.countItems(params).then((data) => {
+  await menulv2Model.countItems(params).then((data) => {
     params.paginations.totalItems = data
   });
-  productModel.listItems(params)
+
+  await menulv1Model.listItemsInSelecbox().then((items) => {
+    params.menulv1Items = items;
+    params.menulv1Items.unshift({ _id: '', name: 'All category' });
+  });
+
+  menulv2Model.listItems(params)
     .then((items) => {
       res.render(`${folderView}list`, {
         pageTitle: pageTitleIndex,
@@ -64,18 +62,8 @@ router.get('/changeStatus/:id/:status', function (req, res, next) {
   let currentStatus = paramsHelper.getParams(req.params, 'status', 'active');
   let id = paramsHelper.getParams(req.params, 'id', '');
 
-  productModel.changeStatus(currentStatus, id).then(() => {
+  menulv2Model.changeStatus(currentStatus, id).then(() => {
     res.send(currentStatus);
-  });
-});
-
-// change special
-router.get('/changeSpecial/:id/:special', function (req, res, next) {
-  let currentSpecial = paramsHelper.getParams(req.params, 'special', 'active');
-  let id = paramsHelper.getParams(req.params, 'id', '');
-
-  productModel.changeSpecial(currentSpecial, id).then(() => {
-    res.send(currentSpecial);
   });
 });
 
@@ -83,7 +71,7 @@ router.get('/changeSpecial/:id/:special', function (req, res, next) {
 router.post('/changeStatus/:status', function (req, res, next) {
   let currentStatus = paramsHelper.getParams(req.params, 'status', 'active');
 
-  productModel.changeStatus(currentStatus, req.body.cid, 'updateMutiple').then((result) => {
+  menulv2Model.changeStatus(currentStatus, req.body.cid, 'updateMutiple').then((result) => {
     req.flash('success', util.format(notify.CHANGE_STATUS_MULTI_SUCCESS, result.matchedCount), false);
     res.redirect(linkIndex);
   });
@@ -93,15 +81,15 @@ router.post('/changeStatus/:status', function (req, res, next) {
 router.get('/delete/:id', function (req, res, next) {
   let id = paramsHelper.getParams(req.params, 'id', '');
 
-  productModel.deleteItems(id).then(() => {
+  menulv2Model.deleteItems(id).then(() => {
     req.flash('success', notify.DELETE_SUCCESS, false);
     res.redirect(linkIndex);
   });
 });
 
-// delete multiple product
+// delete multiple menulv2
 router.post('/delete', function (req, res, next) {
-  productModel.deleteItems(req.body.cid, 'deleteMutiple').then(() => {
+  menulv2Model.deleteItems(req.body.cid, 'deleteMutiple').then(() => {
     req.flash('success', notify.DELETE_MULTI_SUCCESS, false);
     res.redirect(linkIndex);
   });
@@ -114,7 +102,7 @@ router.post('/changeOrdering', function (req, res, next) {
   let id = req.body.id;
   let orderings = req.body.value;
 
-  productModel.changeOrdering(orderings, id).then(() => {
+  menulv2Model.changeOrdering(orderings, id).then(() => {
     res.json('Cập nhật thành công');
   });
 });
@@ -125,7 +113,7 @@ router.post('/changeType', function (req, res, next) {
   let idType = req.body.idType;
   let nameSelect = req.body.nameSelect;
 
-  productModel.changeType(nameSelect, id, idType).then(() => {
+  menulv2Model.changeType(nameSelect, id, idType).then(() => {
     res.send('Cập nhật category thành công');
   });
 });
@@ -133,59 +121,47 @@ router.post('/changeType', function (req, res, next) {
 // Form
 router.get('/form(/:id)?', async function (req, res, next) {
   let id = paramsHelper.getParams(req.params, 'id', '');
-  let item = { name: '', ordering: 0, status: 'novalue' };
+  let item = { name: '', ordering: 0, status: 'novalue',menulv1:[{id: '',name:''}] };
   let errors = null;
   let params = {};
-  await categoryModel.listItemsCategoryProduct().then((items) => {
-    params.categoryItems = items;
-    params.categoryItems.unshift({ _id: '', name: 'Choose category' })
+
+  await menulv1Model.listItemsInSelecbox().then((items) => {
+    params.menulv1Items = items;
+    params.menulv1Items.unshift({ _id: '', name: 'Choose category' });
   });
 
   if (id === '') {//ADD
     res.render(`${folderView}form`, { pageTitle: pageTitleAdd, item, errors, params });
   } else {//EDIT
-    productModel.getItems(id).then((item) => {
-      item.category_id = item.category.id;
-      item.category_name = item.category.name;
+    menulv2Model.getItems(id).then((item) => {
       res.render(`${folderView}form`, { pageTitle: pageTitleEdit, item, errors, params });
     });
   }
 });
 
 // Save
-router.post('/save', (req, res, next) => {
-  uploadThumb(req, res, async function (errUpload) {
+router.post('/save', async (req, res, next) => {
     let item = Object.assign(req.body);
     let taskCurrent = (typeof item !== 'undefined' && item.id !== "") ? 'edit' : 'add';
 
-    let errors = validatorProduct.validator(req, errUpload, taskCurrent);
+    let errors = validatorMenulv2.validator(req);
     let params = {};
 
     if (errors.length <= 0) {
       let message = taskCurrent == 'add' ? notify.ADD_SUCCESS : notify.EDIT_SUCCESS;
-      if (req.file == undefined) {
-        item.thumb = item.image_old;
-      } else {
-        item.thumb = req.file.filename;
-        if (taskCurrent == 'edit') {
-          fileHelper.remove('public/uploads/product/', item.image_old);
-        }
-      }
-      productModel.saveItems(item, taskCurrent).then(() => {
+      
+      menulv2Model.saveItems(item, taskCurrent).then(() => {
         req.flash('success', message, false);
         res.redirect(linkIndex);
       });
     } else {
-      let pageTitle = taskCurrent == 'add' ? pageTitleAdd : pageTitleEdit;
-      if(req.file != undefined) fileHelper.remove('public/uploads/product/', req.file.filename); // xóa tấm hình khi form không hợp lệ
-      await categoryModel.listItemsCategoryProduct().then((items) => {
-        params.categoryItems = items;
-        params.categoryItems.unshift({ _id: '', name: 'All category' });
+      await menulv1Model.listItemsInSelecbox().then((items) => {
+        params.menulv1Items = items;
+        params.menulv1Items.unshift({ _id: '', name: 'Choose category' });
       });
-      if (taskCurrent == 'edit') item.thumb = item.image_old;
+      let pageTitle = taskCurrent == 'add' ? pageTitleAdd : pageTitleEdit;
       res.render(`${folderView}form`, { pageTitle: pageTitle, params, item, errors });
     }
-  })
 
 });
 
@@ -198,8 +174,8 @@ router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
 });
 
 // Filter
-router.get('/filter-category/:category_id', function (req, res, next) {
-  req.session.category_id = paramsHelper.getParams(req.params, 'category_id', '');
+router.get('/filter-category/:menulv1_id', function (req, res, next) {
+  req.session.menulv1_id = paramsHelper.getParams(req.params, 'menulv1_id', '');
   let keyword = paramsHelper.getParams(req.query, 'keyword', "");
   if(keyword) {
     res.redirect(linkIndex + '?keyword=' + keyword);

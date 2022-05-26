@@ -13,8 +13,8 @@ $(document).ready(function (e) {
 
     });
 
-    if ($('textarea#content_ck').length) {
-        CKEDITOR.replace('content_ck');
+    if ($('textarea#description_ck').length) {
+        CKEDITOR.replace('description_ck');
     }
 
     function change_form_action(slb_selector, form_selector, id_btn_action) {
@@ -146,14 +146,24 @@ $(document).ready(function (e) {
         });
     }
 
+    // get name category selected
     $('select[name="group_id"]').change(function () {
         $('input[name="group_name"]').val($(this).find('option:selected').text());
     });
 
-    $('select[name="category_id"]').change(function () {
-        $('input[name="category_name"]').val($(this).find('option:selected').text());
+    $('select[name="menulv1"]').change(function () {
+        $('#name_menulv1').val($(this).find('option:selected').text());
     });
 
+    $('select[name="menulv2"]').change(function () {
+        $('#name_menulv2').val($(this).find('option:selected').text());
+    });
+
+    $('select[name="menulv3"]').change(function () {
+        $('#name_menulv3').val($(this).find('option:selected').text());
+    });
+
+    // filter 
     $('select[name="filter_group"]').change(function () {
         var path = window.location.pathname.split('/');
         var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-group/' + $(this).val();
@@ -326,54 +336,6 @@ for (var i = 0; i < menuLv2.length; i++) {
     });
 }
 
-const alerDelete = (test) => {
-    const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
-
-    swalWithBootstrapButtons.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonText: 'No, cancel!',
-        confirmButtonText: 'Yes, delete it!',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.value) {
-            swalWithBootstrapButtons.fire(
-                'Deleted!',
-                'Your file has been deleted.',
-                'success'
-            );
-            $.ajax({
-                type: "GET",
-                url: test,
-                data: "data",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                }
-            });
-
-        } else if (
-            /* Read more about handling dismissals below */
-            result.dismiss === Swal.DismissReason.cancel
-        ) {
-            swalWithBootstrapButtons.fire(
-                'Cancelled',
-                'Your imaginary file is safe :)',
-                'error'
-            )
-        }
-    })
-
-}
-
 // kiểm tra số lượng đã checked và action lựa chọn
 var checkCount = 0;
 var textSelect = 'Bulk Action'
@@ -389,33 +351,6 @@ $(".custom-control-input").change(function () {
 $(".slbAction").change(function () {
     textSelect = $(".slbAction option:selected").text();
 });
-
-const applyAction = (link) => {
-    console.log(textSelect);
-    if (checkCount && textSelect !== 'Bulk Action') {
-        $.ajax({
-            type: "POST",
-            url: link,
-            data: "data",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-            }
-        });
-    } else {
-        Swal.fire({
-            toast: true,
-            icon: 'error',
-            title: 'action unselected or unchecked items',
-            animation: true,
-            position: 'top-right',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-        });
-    }
-
-}
 
 
 const changeOrdering = (element) => {

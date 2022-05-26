@@ -1,9 +1,11 @@
-var Model = require(__path_schemas + 'menulv1');
+var Model = require(__path_schemas + 'menulv3');
+var menulv2Model = require(__path_models + 'menulv2');
 var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
 
 module.exports = {
     listItems: (params) => {
         let objWhere = {};
+        if (params.categoryId !== "novalue") objWhere.menulv2 = params.categoryId;
         if (params.currentStatus !== 'all') objWhere.status = params.currentStatus;
         if (params.keyword !== "") objWhere.name = new RegExp(params.keyword, 'i');
         let sort = {};
@@ -18,15 +20,14 @@ module.exports = {
 
     listItemsFrontend: (params = null,options = null) => {
         let find ={status: 'active'};
-        let select = 'id name slug';
+        let select = 'id name slug menulv2';
         let sort = {ordering: 'asc'}
-        let limit = 10;
 
-        return Model.find(find).select(select).limit(limit).sort(sort);
+        return Model.find(find).select(select).sort(sort);
     },
 
     listItemsInSelecbox: () => {
-        return Model.find({}, { name: 1, _id: 1 });
+        return Model.find({}, { name: 1, _id: 1,menulv2:1,menulv1:1 }).sort({menulv1:'asc'});
     },
 
     getItems: (id) => {
@@ -35,6 +36,7 @@ module.exports = {
 
     countItems: (params) => {
         let objWhere = {};
+        if (params.categoryId !== "novalue") objWhere.menulv2 = params.categoryId;
         if (params.currentStatus !== 'all' && params.currentStatus !== undefined) objWhere.status = params.currentStatus;
         if (params.keyword !== "" && params.keyword !== undefined) objWhere.name = new RegExp(params.keyword, 'i');
         return Model.count(objWhere)
@@ -71,6 +73,25 @@ module.exports = {
         return Model.updateOne({ _id: cids }, data);
     },
 
+    changeType: async (nameSelect, id,idType, options = 'updateOne') => {
+        let slugMenulv2;
+        let menulv1;
+        await menulv2Model.getItems(idType).then((itemMenulv2) => {
+            slugMenulv2 = itemMenulv2.slug;
+            menulv1 = itemMenulv2.menulv1;
+        });
+        let data = {
+            menulv2:[idType,nameSelect,slugMenulv2],
+            menulv1:menulv1,
+            modified: {
+                user_id: 0,
+                user_name: 'admin',
+                time: Date.now(),
+            }
+        }
+        return Model.updateOne({ _id: id }, data);
+    },
+    
     deleteItems: (id, options = 'deleteOne') => {
 
         if (options == 'deleteOne') {
@@ -80,8 +101,11 @@ module.exports = {
         }
     },
 
-    saveItems: (item, options = 'add') => {
-
+    saveItems: async (item, options = 'add') => {
+        await menulv2Model.getItems(item.menulv2[0]).then((itemMenulv2) => {
+            item.menulv2.push(itemMenulv2.slug);
+            item.menulv1 = itemMenulv2.menulv1;
+        });
         if (options == 'add') {
             item.created = {
                 user_id: 0,
@@ -96,6 +120,8 @@ module.exports = {
                 name: item.name,
                 status: item.status,
                 ordering: parseInt(item.ordering),
+                menulv2: item.menulv2,
+                menulv1: item.menulv1,
                 slug: convertToSlugHelper.convertToSlug(item.slug),
                 modified: {
                     user_id: 0,

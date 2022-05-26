@@ -3405,7 +3405,7 @@ html[xmlns] .slider-wrap {
 	display: flex;
 	align-items: center;
 	-ms-flex-align: center;
-	/* margin-right: auto; */
+	margin-right: auto;
 	max-height: 100%;
 }
 
@@ -3527,6 +3527,7 @@ only screen and (                min-resolution: 2dppx) {
 	flex-grow: 1;
 	-ms-flex-align: center;
 	align-items: center;
+	margin-right: auto;
 }
 
 .primary-menu + .primary-menu {
@@ -6441,7 +6442,7 @@ body:not(.has-plugin-html5video) .video-wrap video {
 
 #page-title {
 	position: relative;
-	padding: 4rem 0;
+	padding: 2rem 0;
 	background-color: #F5F5F5;
 	border-bottom: 1px solid #EEE;
 }

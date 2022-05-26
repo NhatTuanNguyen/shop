@@ -4,14 +4,9 @@ const schema = new mongoose.Schema({
     name: String,
     slug: String,
     status: String,
-    special: String,
     ordering: Number,
-    content: String,
-    thumb: String,
-    category: {
-        id: String,
-        name: String,
-    },
+    menulv1: Array,
+    menulv2: Array,
     created: {
         user_id: Number, 
         user_name: String,
@@ -23,4 +18,4 @@ const schema = new mongoose.Schema({
         time: Date,
     }
 });
-module.exports = mongoose.model('article', schema);
+module.exports = mongoose.model('menulv3', schema);

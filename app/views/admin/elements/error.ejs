@@ -4,6 +4,7 @@
         <h5><i class="icon fas fa-exclamation-triangle"></i> Lỗi!</h5>
         <ul class="list-unstyled mb-0">
             <% errors.forEach((error)=> { %>
+                <% if(error.param.includes("[0]")) error.param = error.param.slice(0, error.param.length - 3) %> 
                 <li class="text-white"><b><%= error.param.charAt(0).toUpperCase() + error.param.slice(1) %></b>: <%= error.msg %></li>
             <% }) %>
         </ul>

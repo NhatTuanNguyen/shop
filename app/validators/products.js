@@ -6,7 +6,7 @@ const options = {
     ordering: { min: 0, max: 100 },
     status: { value: 'novalue' },
     special: { value: 'novalue' },
-    content: { min: 5, max: 20000 },
+    description: { min: 5, max: 20000 },
 }
 
 module.exports = {
@@ -24,13 +24,9 @@ module.exports = {
         req.checkBody('status', notify.ERROR_STATUS)
             .isNotEqual(options.status.value);
 
-        // STATUS
-        req.checkBody('special', notify.ERROR_SPECIAL)
-            .isNotEqual(options.status.value);
-
-        // CONTENT
-        req.checkBody('content', util.format(notify.ERROR_NAME, options.content.min, options.content.max) )
-            .isLength({ min: options.content.min, max: options.content.max });
+        // description
+        req.checkBody('description', util.format(notify.ERROR_NAME, options.description.min, options.description.max) )
+            .isLength({ min: options.description.min, max: options.description.max });
 
         let errors = req.validationErrors() !== false ? req.validationErrors() : [];
         if (errUpload) {

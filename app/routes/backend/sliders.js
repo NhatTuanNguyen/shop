@@ -16,7 +16,7 @@ const pageTitleIndex = 'Sliders Management';
 const pageTitleAdd = pageTitleIndex + ' - Add';
 const pageTitleEdit = pageTitleIndex + ' - Edit';
 const folderView = __path_views_admin + 'pages/sliders/';
-uploadThumb = fileHelper.upload('thumb', 'sliders');
+uploadThumbSlider = fileHelper.upload('thumb', 'sliders');
 
 /* GET sliders listing. */
 router.get('(/status/:status)?', async (req, res, next) => {
@@ -129,7 +129,7 @@ router.get('/form(/:id)?', async function (req, res, next) {
 
 // Save
 router.post('/save', (req, res, next) => {
-  uploadThumb(req, res, async function (errUpload) {
+  uploadThumbSlider(req, res, async function (errUpload) {
     let item = Object.assign(req.body);
     let taskCurrent = (typeof item !== 'undefined' && item.id !== "") ? 'edit' : 'add';
 
