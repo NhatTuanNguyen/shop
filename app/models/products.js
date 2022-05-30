@@ -19,46 +19,35 @@ module.exports = {
             .skip((params.paginations.currentPage - 1) * params.paginations.totalItemPerPage)
     },
 
-    // listItemsFrontend: (params = null,options = null) => {
-    //     let find ={};
-    //     let select = 'name created.user_name created.time menulv3 thumb';
-    //     let sort = {};
-    //     let limit = 3;
+    listItemsFrontend: (params = null,options = null) => {
+        let find ={};
+        let select = 'name';
+        let sort = {};
+        let limit = 40;
+        switch (options.task) {
+            case 'itemsInCategory':
+                select = 'name slug thumb price reduce_price menulv1 menulv2 menulv3';
+                if(params.slugMenulv2 == ''){
+                    find = {status: 'active',menulv1:params.slugMenulv1,menulv2:params.slugMenulv3};
+                } else {
+                    find = {status: 'active',menulv1:params.slugMenulv1,menulv2:params.slugMenulv2,menulv3:params.slugMenulv3};
+                }
+                sort = {ordering: 'asc'}
+                break;
+        }
 
-    //     if (options.task == 'itemsSpecial') {
-    //         find = {status: 'active',special:'active'};
-    //         select = 'name created.time thumb slug menulv3';
-    //         sort = {ordering: 'asc'}
-    //     } else if (options.task == 'itemsNew') {
-    //         find = {status: 'active'};
-    //         select = 'name slug created.user_name created.time menulv3 thumb content';
-    //         sort = {'created.time': 'desc'};
-    //         limit = 8;
-    //     } else if (options.task == 'itemsInCategory') {
-    //         find = {status: 'active','category.id':params.id};
-    //         select = 'name slug created.user_name created.time menulv3 thumb content';
-    //         sort = {'created.time': 'desc'};
-    //         limit = 5;
-    //     } else if (options.task == 'itemsRandom') {
-    //         return Model.aggregate([
-    //             {$match:{status: 'active'}},
-    //             {$project:{_id: 1,name:1,created:1,thumb:1,category:1,slug:1}},
-    //             {$sample:{size: 5}},
-    //         ]);
-    //     } 
-
-    //     return Model.find(find).select(select).limit(limit).sort(sort);
-    // },
+        return Model.find(find).select(select).limit(limit).sort(sort);
+    },
 
     getItems: (id) => {
         return Model.findById(id);
     },
 
-    // getItemFrontend: (params) => {
-    //     let find = {slug: params.slugProducts}
-    //     return Model.find(find)
-    //                 .select('name thumb created content category');
-    // },
+    getItemFrontend: (params) => {
+        let find = {slug: params.slugProducts}
+        return Model.find(find)
+                    .select('name thumb menulv1 menulv2 menulv3 price reduce_price description');
+    },
 
     countItems: (params) => {
         let objWhere = {};

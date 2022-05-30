@@ -1,4 +1,6 @@
 var Model = require(__path_schemas + 'menulv2');
+var schemasMenulv3Model = require(__path_schemas + 'menulv3');
+var schemasProductsModel = require(__path_schemas + 'products');
 var menulv1Model = require(__path_models + 'menulv1');
 var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
 
@@ -109,6 +111,8 @@ module.exports = {
             return new Model(item).save();
 
         } else if (options == 'edit') {
+            await schemasMenulv3Model.updateMany({menulv2:item.id},{menulv2:[item.id,item.name,convertToSlugHelper.convertToSlug(item.slug)]});
+            await schemasProductsModel.updateMany({menulv2:item.id},{menulv2:[item.id,item.name,convertToSlugHelper.convertToSlug(item.slug)]});
             return Model.updateOne({ _id: item.id }, {
                 name: item.name,
                 status: item.status,

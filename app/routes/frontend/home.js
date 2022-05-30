@@ -14,9 +14,7 @@ router.get('/', async function(req, res, next) {
   
   let itemsSlider = [];
   let itemsBanner = [];
-  let itemsMenulv1 = [];
-  let itemsMenulv2 = [];
-  let itemsMenulv3 = [];
+
 
   await slidersModel.listItemsFrontend().then((items)=>{
     itemsSlider = items
@@ -26,25 +24,12 @@ router.get('/', async function(req, res, next) {
     itemsBanner = items
   });
   
-  await menulv1Model.listItemsFrontend().then((items)=>{
-    itemsMenulv1 = items
-  });
   
-  await menulv2Model.listItemsFrontend().then((items)=>{
-    itemsMenulv2 = items
-  });
-
-  await menulv3Model.listItemsFrontend().then((items)=>{
-    itemsMenulv3 = items
-  });
 
   res.render(`${folderView}index`,{
     layout:layoutfrontend,
     items:itemsSlider,
     itemsBanner,
-    itemsMenulv1,
-    itemsMenulv2,
-    itemsMenulv3,
   });
 });
 

@@ -1,4 +1,7 @@
 var Model = require(__path_schemas + 'menulv1');
+var schemasMenulv2Model = require(__path_schemas + 'menulv2');
+var schemasMenulv3Model = require(__path_schemas + 'menulv3');
+var schemasProductsModel = require(__path_schemas + 'products');
 var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
 
 module.exports = {
@@ -80,7 +83,7 @@ module.exports = {
         }
     },
 
-    saveItems: (item, options = 'add') => {
+    saveItems: async (item, options = 'add') => {
 
         if (options == 'add') {
             item.created = {
@@ -92,6 +95,9 @@ module.exports = {
             return new Model(item).save();
 
         } else if (options == 'edit') {
+            await schemasMenulv2Model.updateMany({menulv1:item.id},{menulv1:[item.id,item.name,convertToSlugHelper.convertToSlug(item.slug)]});
+            await schemasMenulv3Model.updateMany({menulv1:item.id},{menulv1:[item.id,item.name,convertToSlugHelper.convertToSlug(item.slug)]});
+            await schemasProductsModel.updateMany({menulv1:item.id},{menulv1:[item.id,item.name,convertToSlugHelper.convertToSlug(item.slug)]});
             return Model.updateOne({ _id: item.id }, {
                 name: item.name,
                 status: item.status,

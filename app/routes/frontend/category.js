@@ -1,36 +1,27 @@
 var express = require('express');
 var router = express.Router();
-var categoryModel = require(__path_models + 'category');
-var articleModel = require(__path_models + 'article');
+var productsModel = require(__path_models + 'products');
 const paramsHelper = require(__path_helpers + 'params');
 
 const folderView = __path_views_frontend + 'pages/category/';
 const layoutfrontend = __path_views_frontend + 'frontend';
 
 /* GET home page. */
-router.get('/:slug', async function (req, res, next) {
-  let itemsInCategory = [];
-  let category = [];
-  let idCategory =''
-  let slugCategory = paramsHelper.getParams(req.params, 'slug', '');
+router.get('/:menulv1/(:menulv2/)?(:menulv3)?', async function (req, res, next) {
 
-  await categoryModel.getItemsFromSlug(slugCategory).then((items) => {
-    idCategory = items[0].id
-  });
-  
-  await articleModel.listItemsFrontend({ id: idCategory }, { task: 'itemsInCategory' }).then((items) => {
+  let slugMenulv1 = paramsHelper.getParams(req.params, 'menulv1', '');
+  let slugMenulv2 = paramsHelper.getParams(req.params, 'menulv2', '');
+  let slugMenulv3 = paramsHelper.getParams(req.params, 'menulv3', '');
+
+  let itemsInCategory =[];
+
+  await productsModel.listItemsFrontend({ slugMenulv1,slugMenulv2,slugMenulv3 }, { task: 'itemsInCategory' }).then((items) => {
     itemsInCategory = items
-  });
-
-  await categoryModel.listItemsFrontend({ id: idCategory }, { task: 'category' }).then((items) => {
-    category = items
   });
 
   res.render(`${folderView}index`, {
     layout: layoutfrontend,
-    top_post: false,
-    category,
-    itemsInCategory,
+    items: itemsInCategory,
   });
 });
 
