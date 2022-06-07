@@ -18,10 +18,22 @@ selecBoxHelper = (name,categoryItems,optionSelected="",keyword,addClass='',colle
                 xhtml += `<optgroup value="${menulv1}" label="${menulv1}">`;
             } 
             if(categoryItems[i].menulv1[1] == menulv1) {
-                if (categoryItems[i].id !== idItem) xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+                if (categoryItems[i].id !== idItem){
+                    if (categoryItems[i].menulv2 == undefined) {
+                        xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+                    } else {
+                        xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name} (${categoryItems[i].menulv2[1]})</option>`;
+                    }
+                }
             } else {
                 xhtml += `<optgroup value="${categoryItems[i].menulv1[1]}" label="${categoryItems[i].menulv1[1]}">`;
-                if (categoryItems[i].id !== idItem) xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+                if (categoryItems[i].id !== idItem){
+                    if (categoryItems[i].menulv2 == undefined) {
+                        xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name}</option>`;
+                    } else {
+                        xhtml += `<option value="${id}" ${selected}>${categoryItems[i].name} (${categoryItems[i].menulv2[1]})</option>`;
+                    }
+                }
                 
                 menulv1 = categoryItems[i].menulv1[1]
             }

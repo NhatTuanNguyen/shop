@@ -125,9 +125,9 @@ router.post('/changeOrdering', function (req, res, next) {
 router.post('/changeType', function (req, res, next) {
   let id = req.body.id;
   let idType = req.body.idType;
-  let nameSelect = req.body.nameSelect;
+  // let nameSelect = req.body.nameSelect;
 
-  productsModel.changeType(nameSelect, id, idType).then(() => {
+  productsModel.changeType(id, idType).then(() => {
     res.send('Cập nhật category thành công');
   });
 });

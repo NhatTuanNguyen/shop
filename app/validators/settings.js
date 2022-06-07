@@ -16,10 +16,12 @@ module.exports = {
         req.checkBody('info', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('map', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('email', notify.ERROR_NOTEMPTY ).notEmpty();
+        req.checkBody('phone', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('media[facebook]', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('media[twitter]', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('media[youtube]', notify.ERROR_NOTEMPTY ).notEmpty();
         req.checkBody('media[instagram]', notify.ERROR_NOTEMPTY ).notEmpty();
+        req.checkBody('media[tiktok]', notify.ERROR_NOTEMPTY ).notEmpty();
 
         let errors = req.validationErrors() !== false ? req.validationErrors() : [];
         if (errUpload) {

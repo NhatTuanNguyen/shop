@@ -15,6 +15,7 @@ module.exports = async (req, res, next) => {
       await menulv3Model.listItemsFrontend().then((items)=>{
         res.locals.itemsMenulv3 = items
       });
+      res.locals.keyword = '';
 
     next();
 }

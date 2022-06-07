@@ -26,13 +26,14 @@ module.exports = {
         let limit = 40;
         switch (options.task) {
             case 'itemsInCategory':
-                select = 'name slug thumb price reduce_price menulv1 menulv2 menulv3';
-                if(params.slugMenulv2 == ''){
-                    find = {status: 'active',menulv1:params.slugMenulv1,menulv2:params.slugMenulv3};
-                } else {
-                    find = {status: 'active',menulv1:params.slugMenulv1,menulv2:params.slugMenulv2,menulv3:params.slugMenulv3};
-                }
+                select = 'id name slug thumb price reduce_price menulv1 menulv2 menulv3';
+                find = {status: 'active',$or: [{menulv1:params.id},{menulv2:params.id},{menulv3:params.id}]};
                 sort = {ordering: 'asc'}
+                break;
+            case 'all':
+                select = 'id name slug thumb price reduce_price menulv1 menulv2 menulv3';
+                sort = {ordering: 'asc'};
+                limit = 16
                 break;
         }
 
@@ -43,15 +44,21 @@ module.exports = {
         return Model.findById(id);
     },
 
-    getItemFrontend: (params) => {
-        let find = {slug: params.slugProducts}
-        return Model.find(find)
+    getItemFrontend: (params,options='findOne') => {
+        switch (options) {
+            case 'findOne':
+                return Model.findById(params.id)
                     .select('name thumb menulv1 menulv2 menulv3 price reduce_price description');
+                break;
+            case 'findMultiple':
+                return Model.find({_id: {$in: params.id}}).select('name slug thumb price reduce_price');
+                break;
+        }
     },
 
     countItems: (params) => {
         let objWhere = {};
-        if (params.categoryId !== "novalue") objWhere.menulv3 = params.categoryId;
+        if (params.categoryId !== "novalue" && params.categoryId !== undefined) objWhere.menulv1 = params.categoryId;
         if (params.currentStatus !== 'all' && params.currentStatus !== undefined) objWhere.status = params.currentStatus;
         if (params.keyword !== "" && params.keyword !== undefined) objWhere.name = new RegExp(params.keyword, 'i');
         return Model.count(objWhere)
@@ -88,17 +95,18 @@ module.exports = {
         return Model.updateOne({ _id: cids }, data);
     },
 
-    changeType: async (nameSelect, id,idType, options = 'updateOne') => {
+    changeType: async (id,idType, options = 'updateOne') => {
         let slugMenulv3;
         let menulv1;
         let menulv2;
         await menulv3Model.getItems(idType).then((itemMenulv3) => {
             slugMenulv3 = itemMenulv3.slug;
+            nameMenulv3 = itemMenulv3.name;
             menulv1 = itemMenulv3.menulv1;
             menulv2 = itemMenulv3.menulv2;
         });
         let data = {
-            menulv3:[idType,nameSelect,slugMenulv3],
+            menulv3:[idType,nameMenulv3,slugMenulv3],
             menulv1:menulv1,
             menulv2:menulv2,
             modified: {
@@ -136,7 +144,8 @@ module.exports = {
 
     saveItems: async (item, options = 'add') => {
         await menulv3Model.getItems(item.menulv3[0]).then((itemMenulv3) => {
-            item.menulv3.push(itemMenulv3.slug);
+            item.menulv3.pop();
+            item.menulv3.push(itemMenulv3.name,itemMenulv3.slug);
             item.menulv1 = itemMenulv3.menulv1;
             item.menulv2 = itemMenulv3.menulv2;
         });

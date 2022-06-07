@@ -28,7 +28,7 @@ module.exports = {
     },
 
     listItemsInSelecbox: () => {
-        return Model.find({}, { name: 1, _id: 1,menulv2:1,menulv1:1 }).sort({menulv1:'asc'});
+        return Model.find({status: 'active',}, { name: 1, _id: 1,menulv2:1,menulv1:1 }).sort({menulv1:'asc'});
     },
 
     getItems: (id) => {
@@ -37,7 +37,7 @@ module.exports = {
 
     countItems: (params) => {
         let objWhere = {};
-        if (params.categoryId !== "novalue") objWhere.menulv2 = params.categoryId;
+        if (params.categoryId !== "novalue" && params.categoryId !== undefined) objWhere.menulv1 = params.categoryId;
         if (params.currentStatus !== 'all' && params.currentStatus !== undefined) objWhere.status = params.currentStatus;
         if (params.keyword !== "" && params.keyword !== undefined) objWhere.name = new RegExp(params.keyword, 'i');
         return Model.count(objWhere)

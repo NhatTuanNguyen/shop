@@ -1,0 +1,81 @@
+<% include ./../../helpers/format-summary %>
+<% const folderUpload = '/uploads/products/' %>
+<section id="page-title">
+
+	<div class="container clearfix">
+		<h1>Shop</h1>
+		<span>Start buying your favorite items</span>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="/">Home</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Search</a></li>
+		</ol>
+	</div>
+
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="row">
+				<div class="col-12 col-md-auto">
+					<div class="grid-filter-wrap">
+						<!-- Portfolio Filter
+						============================================= -->
+						<ul class="grid-filter" data-container="#shop">
+							<li class="activeFilter"><a href="#" >Recommended</a></li>
+							<li><a href="#" >Price high to low</a></li>
+							<li><a href="#">Price low to high</a></li>
+						</ul><!-- .grid-filter end -->
+					</div>
+				</div>
+			</div>
+
+			<!-- Shop
+			============================================= -->
+			<div id="shop" class="shop row grid-container gutter-30" data-layout="fitRows">
+				<% if(items.length > 0){%> 
+				<% items.forEach( (item, index) => {%>
+				<div class="product col-lg-3 col-md-4 col-sm-6 col-12">
+					<div class="grid-inner">
+						<div class="product-image">
+							<a href="#"><img src="<%= folderUpload+item.thumb %> " alt="Checked Short Dress"></a>
+							<!-- <a href="#"><img src="/canvas/images/shop/dress/1-1.jpg" alt="Checked Short Dress"></a> -->
+							<!-- <div class="sale-flash badge bg-secondary p-2">Out of Stock</div> -->
+							<% if(item.price > item.reduce_price){%> 
+								<div class="sale-flash badge bg-success p-2 text-uppercase">Sale!</div>
+							<%}%>
+							<div class="bg-overlay">
+								<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+									<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
+									<a href="include/ajax/shop-item.html" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+								</div>
+								<div class="bg-overlay-bg bg-transparent"></div>
+							</div>
+						</div>
+						<div class="product-desc ">
+							<div class="product-title "><h3><a class="name-product" href="/<%= item.slug+'/'+item.id %>"><%= formatSummary(item.name,36) %></a></h3></div>
+							<% if(item.price == item.reduce_price){%> 
+								<div class="product-price">$<%= item.price %></div>
+							<%} else { %> 
+								<div class="product-price"><del>$<%= item.price %></del> <ins>$<%= item.reduce_price %></ins></div>
+							<%} %>
+							<div class="product-rating">
+								<i class="icon-star3"></i>
+								<i class="icon-star3"></i>
+								<i class="icon-star3"></i>
+								<i class="icon-star3"></i>
+								<i class="icon-star-half-full"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<%})%> 
+				<%} else{ %>
+					<h1 class="text-center">No products</h1>
+				<%}%>
+			</div><!-- #shop end -->
+		</div>
+	</div>
+</section><!-- #content end -->

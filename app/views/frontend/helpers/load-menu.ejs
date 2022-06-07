@@ -3,8 +3,8 @@
         let html='';
         itemsMenulv1.forEach((item) =>{
             html += 
-            `<li class="menu-item mega-menu">
-                <a class="menu-link" href="/">
+            `<li class="menu-item mega-menu menulv1">
+                <a class="menu-link" href="/${item.slug+'/'+item.id}">
                     <div>${item.name}</div>
                 </a>`;
                 html += handleMenulv2(itemsMenulv2,itemsMenulv3,item);
@@ -27,8 +27,8 @@
             if(itemMenulv1.id == item2.menulv1[0]){
                 html += 
                 `<ul class="sub-menu-container mega-menu-column col-lg">
-                    <li class="menu-item mega-menu-title"><a class="menu-link" href="/category/${itemMenulv1.slug+'/'+item2.slug}"><div>${item2.name}</div></a>`;
-                        html += handleMenulv3(itemsMenulv3,item2,itemMenulv1);
+                    <li class="menu-item mega-menu-title"><a class="menu-link" href="/${item2.slug+'/'+item2.id}"><div>${item2.name}</div></a>`;
+                        html += handleMenulv3(itemsMenulv3,item2);
                 html += `</li></ul>`;
             }
         });
@@ -41,7 +41,7 @@
         return html;
     }
 
-    handleMenulv3 = (itemsMenulv3,itemMenulv2,itemMenulv1) => {
+    handleMenulv3 = (itemsMenulv3,itemMenulv2) => {
         let html ='';
         for(let i=0; i<itemsMenulv3.length; i++){
             if(itemMenulv2.id == itemsMenulv3[i].menulv2[0]){
@@ -51,7 +51,7 @@
         };
         itemsMenulv3.forEach((item3) =>{
             if(itemMenulv2.id == item3.menulv2[0]){
-                html += `<li class="menu-item"><a class="menu-link" href="/category/${itemMenulv1.slug+'/'+itemMenulv2.slug+'/'+item3.slug}"><div>${item3.name}</div></a></li>`;
+                html += `<li class="menu-item"><a class="menu-link" href="/${item3.slug+'/'+item3.id}"><div>${item3.name}</div></a></li>`;
             }
         });
         for(let i=0; i<itemsMenulv3.length; i++){

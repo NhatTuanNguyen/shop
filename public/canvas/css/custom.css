@@ -1,3 +1,31 @@
 h3 {
 	margin-bottom: 0.75rem;
 }
+
+.banner {
+	border-radius: 100px;
+}
+
+.info-contact {
+	margin-top:132px !important;
+	padding-left:40px!important;
+}
+
+.img-footer {
+	width: 120px;
+	height:24px;
+	margin-bottom: 30px;
+	object-fit: cover;
+}
+
+.name-container {
+	height:44px
+}
+
+.name-product {
+	font-size:14px;
+}
+
+.order{
+	padding: 12px 28px;
+}

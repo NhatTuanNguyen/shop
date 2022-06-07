@@ -84,8 +84,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.locals.systemConfig = systemConfig;
 app.locals.moment = moment;
 
-app.use('/', require(__path_routes + 'frontend/index'));
 app.use(`/${systemConfig.prefixAdmin}`, require(__path_routes + 'backend/index'));
+app.use('/', require(__path_routes + 'frontend/index'));
 
 
 // catch 404 and forward to error handler
@@ -111,9 +111,8 @@ app.use( async function(err, req, res, next) {
     //   itemsCategory = items
     // });
 
-    res.render(__path_views_blog + 'pages/error', {
+    res.render(__path_views_frontend + 'pages/error', {
       pageTitle: 'Page Not Found',
-      top_post:false,
       layout: false,
       // itemsCategory,
     });

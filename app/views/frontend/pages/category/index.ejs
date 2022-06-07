@@ -1,3 +1,4 @@
+<% include ./../../helpers/format-summary %>
 <% const folderUpload = '/uploads/products/' %>
 <section id="page-title">
 
@@ -7,9 +8,13 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="#">Home</a></li>
 			<% if(items.length > 0){%> 
-			<li class="breadcrumb-item"><a href="#"><%= items[0].menulv1[1] %></a></li>
-			<li class="breadcrumb-item"><a href="/category/<%= items[0].menulv1[1]+'/'+items[0].menulv2[2] %>"><%= items[0].menulv2[1] %></a></li>
-			<li class="breadcrumb-item active" aria-current="page"><%= items[0].menulv3[1] %></a></li>
+				<li class="breadcrumb-item"><a href="/<%= items[0].menulv1[2]+'/'+items[0].menulv1[0] %>"><%= items[0].menulv1[1] %></a></li>
+				<% if(items[0].menulv2[0] == id){%>
+					<li class="breadcrumb-item active" aria-current="page"><%= items[0].menulv2[1] %></li>
+				<%} else if(items[0].menulv3[0] == id) {%>
+					<li class="breadcrumb-item"><a href="/<%= items[0].menulv2[2]+'/'+items[0].menulv2[0] %>"><%= items[0].menulv2[1] %></a></li>
+					<li class="breadcrumb-item active" aria-current="page"><%= items[0].menulv3[1] %></a></li>
+				<%} %> 
 			<%} %> 
 		</ol>
 	</div>
@@ -51,14 +56,14 @@
 							<%}%>
 							<div class="bg-overlay">
 								<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-									<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
+									<a data-id="<%= item.id %>" href="/cart" class="btn btn-dark me-2 add-cart"><i class="icon-shopping-cart"></i></a>
 									<a href="include/ajax/shop-item.html" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
 								</div>
 								<div class="bg-overlay-bg bg-transparent"></div>
 							</div>
 						</div>
-						<div class="product-desc">
-							<div class="product-title"><h3><a href="/products/<%= item.slug %>"><%= item.name %></a></h3></div>
+						<div class="product-desc ">
+							<div class="product-title "><h3><a class="name-product" href="/<%= item.slug+'/'+item.id %>"><%= formatSummary(item.name,36) %></a></h3></div>
 							<% if(item.price == item.reduce_price){%> 
 								<div class="product-price">$<%= item.price %></div>
 							<%} else { %> 
@@ -76,7 +81,7 @@
 				</div>
 				<%})%> 
 				<%} else{ %>
-					<h1 class="text-center">No products have been added yet</h1>
+					<h1 class="text-center">No products</h1>
 				<%}%>
 			</div><!-- #shop end -->
 		</div>

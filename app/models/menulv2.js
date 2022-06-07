@@ -39,7 +39,7 @@ module.exports = {
 
     countItems: (params) => {
         let objWhere = {};
-        if (params.categoryId !== "novalue") objWhere.menulv1 = params.categoryId;
+        if (params.categoryId !== "novalue" && params.categoryId !== undefined) objWhere.menulv1 = params.categoryId;
         if (params.currentStatus !== 'all' && params.currentStatus !== undefined) objWhere.status = params.currentStatus;
         if (params.keyword !== "" && params.keyword !== undefined) objWhere.name = new RegExp(params.keyword, 'i');
         return Model.count(objWhere)

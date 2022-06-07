@@ -5,9 +5,9 @@
 	<div class="container clearfix">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><a href="/">Home</a></li>
-			<li class="breadcrumb-item"><a href="#"><%= item.menulv1[1] %></a></li>
-			<li class="breadcrumb-item"><a href="/category/<%= item.menulv1[1]+'/'+item.menulv2[2] %>"><%= item.menulv2[1] %></a></li>
-			<li class="breadcrumb-item"><a href="/category/<%= item.menulv1[1]+'/'+item.menulv2[2] + '/'+item.menulv3[1] %>"><%= item.menulv3[1] %></a></li>
+			<li class="breadcrumb-item"><a href="/<%= item.menulv1[2]+'/'+item.menulv1[0] %>"><%= item.menulv1[1] %></a></li>
+			<li class="breadcrumb-item"><a href="/<%= item.menulv2[2]+'/'+item.menulv2[0] %>"><%= item.menulv2[1] %></a></li>
+			<li class="breadcrumb-item"><a href="/<%= item.menulv3[2]+'/'+item.menulv3[0] %>"><%= item.menulv3[1] %></a></li>
 			<li class="breadcrumb-item active" aria-current="page"><%= item.name %></li>
 		</ol>
 	</div>
@@ -84,12 +84,13 @@
 							<!-- Product Single - Quantity & Cart Button
 								============================================= -->
 							<form class="cart mb-0 d-flex justify-content-between align-items-center" method="post"
-								enctype='multipart/form-data'>
+								action="/cart">
 								<div class="quantity clearfix">
 									<input type="button" value="-" class="minus">
-									<input type="number" step="1" min="1" name="quantity" value="1" title="Qty"
+									<input type="number" step="1" min="1" name="amount" value="1" title="Qty"
 										class="qty" />
 									<input type="button" value="+" class="plus">
+									<input type="hidden" name="id" value="<%= item.id %>">
 								</div>
 								<button type="submit" class="add-to-cart button m-0">Add to cart</button>
 							</form><!-- Product Single - Quantity & Cart Button End -->
@@ -440,7 +441,7 @@
 
 			<div class="line"></div>
 			<div class="w-100">
-				<h4>Related Products</h4>
+				<h4>YOU MIGHT ALSO LIKE</h4>
 				<div class="owl-carousel product-carousel carousel-widget" data-margin="30" data-pagi="false"
 					data-autoplay="5000" data-items-xs="1" data-items-md="2" data-items-lg="3" data-items-xl="4">
 					<div class="oc-item">
@@ -474,132 +475,6 @@
 							</div>
 						</div>
 					</div>
-
-					<div class="oc-item">
-						<div class="product">
-							<div class="product-image">
-								<a href="#"><img src="/canvas/images/shop/pants/1-1.jpg" alt="Slim Fit Chinos"></a>
-								<a href="#"><img src="/canvas/images/shop/pants/1.jpg" alt="Slim Fit Chinos"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between"
-										data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-										<a href="include/ajax/shop-item.html" class="btn btn-dark"
-											data-lightbox="ajax"><i class="icon-line-expand"></i></a>
-									</div>
-									<div class="bg-overlay-bg bg-transparent"></div>
-								</div>
-							</div>
-							<div class="product-desc center">
-								<div class="product-title">
-									<h3><a href="#">Slim Fit Chinos</a></h3>
-								</div>
-								<div class="product-price">$39.99</div>
-								<div class="product-rating">
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star-half-full"></i>
-									<i class="icon-star-empty"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="oc-item">
-						<div class="product">
-							<div class="product-image">
-								<a href="#"><img src="/canvas/images/shop/shoes/1-1.jpg" alt="Dark Brown Boots"></a>
-								<a href="#"><img src="/canvas/images/shop/shoes/1.jpg" alt="Dark Brown Boots"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between"
-										data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-										<a href="include/ajax/shop-item.html" class="btn btn-dark"
-											data-lightbox="ajax"><i class="icon-line-expand"></i></a>
-									</div>
-									<div class="bg-overlay-bg bg-transparent"></div>
-								</div>
-							</div>
-							<div class="product-desc center">
-								<div class="product-title">
-									<h3><a href="#">Dark Brown Boots</a></h3>
-								</div>
-								<div class="product-price">$49</div>
-								<div class="product-rating">
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star-empty"></i>
-									<i class="icon-star-empty"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="oc-item">
-						<div class="product">
-							<div class="product-image">
-								<a href="#"><img src="/canvas/images/shop/dress/2.jpg" alt="Light Blue Denim Dress"></a>
-								<a href="#"><img src="/canvas/images/shop/dress/2-2.jpg" alt="Light Blue Denim Dress"></a>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between"
-										data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-										<a href="include/ajax/shop-item.html" class="btn btn-dark"
-											data-lightbox="ajax"><i class="icon-line-expand"></i></a>
-									</div>
-									<div class="bg-overlay-bg bg-transparent"></div>
-								</div>
-							</div>
-							<div class="product-desc center">
-								<div class="product-title">
-									<h3><a href="#">Light Blue Denim Dress</a></h3>
-								</div>
-								<div class="product-price">$19.95</div>
-								<div class="product-rating">
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star-empty"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="oc-item">
-						<div class="product">
-							<div class="product-image">
-								<a href="#"><img src="/canvas/images/shop/sunglasses/1.jpg" alt="Unisex Sunglasses"></a>
-								<a href="#"><img src="/canvas/images/shop/sunglasses/1-1.jpg" alt="Unisex Sunglasses"></a>
-								<div class="badge bg-success p-2">Sale!</div>
-								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between"
-										data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-										<a href="include/ajax/shop-item.html" class="btn btn-dark"
-											data-lightbox="ajax"><i class="icon-line-expand"></i></a>
-									</div>
-									<div class="bg-overlay-bg bg-transparent"></div>
-								</div>
-							</div>
-							<div class="product-desc center">
-								<div class="product-title">
-									<h3><a href="#">Unisex Sunglasses</a></h3>
-								</div>
-								<div class="product-price"><del>$19.99</del> <ins>$11.99</ins></div>
-								<div class="product-rating">
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star3"></i>
-									<i class="icon-star-empty"></i>
-									<i class="icon-star-empty"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-
 				</div>
 
 			</div>

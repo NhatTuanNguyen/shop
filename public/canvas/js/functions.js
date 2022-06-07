@@ -997,11 +997,9 @@ window.scwEvents = window.scwEvents || {};
 				return true;
 			}
 
-			$("#top-cart-trigger").off( 'click' ).on( 'click', function(e){
-				$pagemenu.toggleClass('page-menu-open', false);
-				$topCart.toggleClass('top-cart-open');
-				e.stopPropagation();
-				e.preventDefault();
+			$("#top-cart-trigger").hover(function(e){
+				$pagemenu.addClass('page-menu-open', false);
+				$topCart.addClass('top-cart-open');
 			});
 		},
 

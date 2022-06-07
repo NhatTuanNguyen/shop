@@ -159,10 +159,6 @@ $(document).ready(function (e) {
         $('#name_menulv2').val($(this).find('option:selected').text());
     });
 
-    $('select[name="menulv3"]').change(function () {
-        $('#name_menulv3').val($(this).find('option:selected').text());
-    });
-
     // filter 
     $('select[name="filter_group"]').change(function () {
         var path = window.location.pathname.split('/');
@@ -265,17 +261,15 @@ $(document).ready(function (e) {
 
     // Change category or group
     $(".changeType").change(function (e) {
-        console.log('1');
         e.preventDefault();
         const id = $(this).attr('data-id');
         const idType = $(this).val();
-        const nameSelect = $(this).find(`option[value="${idType}"]`).text();
+        // const nameSelect = $(this).find(`option[value="${idType}"]`).text();
         const link = $(this).attr('data-link') + 'changeType';
-        console.log(id,idType,nameSelect,link);
         $.ajax({
             type: "post",
             url: link,
-            data: { id, idType, nameSelect },
+            data: { id, idType },
             dataType: "text",
             success: function (response) {
                 Swal.fire({

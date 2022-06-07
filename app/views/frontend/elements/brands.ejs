@@ -1,0 +1,10 @@
+<% const folderUpload = '/uploads/brands/' %> 
+
+<div class="fancy-title title-border title-center topmargin-sm">
+    <h4>Popular Brands</h4>
+</div>
+<ul class="clients-grid grid-2 grid-sm-3 grid-md-6 mb-0">
+    <% itemsBrand.forEach((item) =>{%>  
+    <li class="grid-item"><a href="#"><img src="<%= folderUpload + item.thumb %> " alt="Clients"></a></li>
+    <%}) %>
+</ul>

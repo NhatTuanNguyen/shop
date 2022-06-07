@@ -31,12 +31,6 @@ module.exports = {
         return Model.findById(id);
     },
 
-    // getItemFrontend: (params) => {
-    //     let find = {slug: params.slugProduct}
-    //     return Model.find(find)
-    //                 .select('name thumb created content category');
-    // },
-
     countItems: (params) => {
         let objWhere = {};
         if (params.currentStatus !== 'all' && params.currentStatus !== undefined) objWhere.status = params.currentStatus;
