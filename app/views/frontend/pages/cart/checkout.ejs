@@ -67,8 +67,8 @@
 										<strong>Cart Subtotal</strong>
 									</td>
 
-									<td class="border-top-0 cart-product-name">
-										<span class="amount">$106.94</span>
+									<td class="border-top-0 cart-product-name subtotal">
+										<span class="amount"></span>
 									</td>
 								</tr>
 								<tr class="cart_item">
@@ -76,8 +76,17 @@
 										<strong>Shipping</strong>
 									</td>
 
-									<td class="cart-product-name">
+									<td class="cart-product-name shipping">
 										<span class="amount">$0</span>
+									</td>
+								</tr>
+								<tr class="cart_item discount" style="display:none;">
+									<td class="cart-product-name">
+										<strong>Discount</strong>
+									</td>
+
+									<td class="cart-product-name">
+										<span class="amount" style="color:red">-$0</span>
 									</td>
 								</tr>
 								<tr class="cart_item">
@@ -86,7 +95,7 @@
 									</td>
 
 									<td class="cart-product-name">
-										<span class="amount color lead"><strong>$106.94</strong></span>
+										<span class="amount color lead"><strong></strong></span>
 									</td>
 								</tr>
 							</tbody>
@@ -96,23 +105,24 @@
 						<div class="col-md-8">
 							<input type="text" value="" class="sm-form-control text-center text-md-start"
 								placeholder="Enter Coupon Code.." />
+								<p class="mb-0 text-center notify" style="display:none;"></p>
 						</div>
 						<div class="col-md-4 mt-3 mt-md-0">
-							<a href="#" class="button button-3d button-black m-0 float-end">Apply Coupon</a>
+							<a href="/cart/coupon" class="button button-3d button-black m-0 float-end apply-coupon">Apply Coupon</a>
 						</div>
+						
 					</div>
 					<div class="border border-dark mt-3 p-2 px-3">
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
 							<label class="form-check-label" for="flexRadioDefault1">
-								Default radio
+								Payment on delivery
 							</label>
 						</div>
 						<div class="form-check">
-							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-								checked>
+							<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" disabled>
 							<label class="form-check-label" for="flexRadioDefault2">
-								Default checked radio
+								Credit card
 							</label>
 						</div>
 					</div>
@@ -120,7 +130,7 @@
 				</div>
 				<div class="w-100"></div>
 				<div class="col-lg-12">
-					<h4>Your Orders</h4>
+					<h4 class="mb-0">Your Orders</h4>
 					<div class="table-responsive">
 						<table class="table cart checkout">
 							<thead>

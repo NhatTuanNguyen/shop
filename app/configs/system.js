@@ -4,4 +4,5 @@ module.exports = {
     env:'dev',
     formatLongTime: 'HH:mm DD-MM-YYYY',
     formatDayTime: 'DD-MM-YYYY',
+    formatDayTimeLocal: 'YYYY-MM-DDTHH:mm'
 }

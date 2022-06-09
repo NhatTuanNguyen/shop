@@ -38,7 +38,8 @@ var moment = require('moment');
 // connect mongodb
 main().catch(err => console.log('err'));
 async function main() {
-  await mongoose.connect('mongodb://localhost:27017/shop');
+  // await mongoose.connect('mongodb://localhost:27017/shop');
+  await mongoose.connect('mongodb+srv://nhattuannguyen12c6:nhattuan12c6@cluster0.t6pff.mongodb.net/shop');
   console.log('connect success');
 }
 

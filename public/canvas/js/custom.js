@@ -109,6 +109,7 @@ $(document).ready(async function (e) {
                 if($('.table.cart:not(.checkout)').length > 0 && checkYourCart) {
                     if(response.length==0){
                         $('.table.cart').replaceWith( "<h2 class='text-center'>Your cart is empty</h2>");
+                        $('.navigation-button').css('display','none');
                     } else {
                         $('.table.cart tbody').prepend(cartHtml);
                         $('.amount.color.lead strong').text('$'+Math.round(totalPrice * 100) / 100 );
@@ -119,6 +120,9 @@ $(document).ready(async function (e) {
                         $('.table.cart:eq(1)').replaceWith( "<h2 class='text-center'>Your cart is empty</h2>");
                     } else {
                         $('.table.cart:eq(1) tbody').prepend(productOrderHtml);
+                        $('.subtotal .amount').text('$'+Math.round(totalPrice * 100) / 100);
+                        var shipping = $('.shipping .amount').text().substring(1);
+                        $('.amount.color.lead strong').text('$'+Math.round((totalPrice+parseFloat(shipping)) * 100) / 100 );
                     }
                 }
             }
@@ -201,6 +205,7 @@ $(document).ready(async function (e) {
 
         $('.amount.color.lead strong').text('$'+Math.round(totalPrice * 100) / 100);
         ajaxShowCart('/cart',{'cart': localStorage.getItem('cart')});
+        $('.navigation-button').css('display','none');
     });
 
     // increase or decrease the number of items
@@ -239,6 +244,57 @@ $(document).ready(async function (e) {
         $('.amount.color.lead strong').text('$'+Math.round(totalPrice * 100) / 100);
         ajaxShowCart('/cart',{'cart': localStorage.getItem('cart')});
     });
-    
+
+    // Apply coupon
+    $('.apply-coupon').click(function(e){
+        e.preventDefault();
+        var currentTime = new Date().toISOString();
+        let value = $(this).closest('.row').find('input').val();
+        let url = $(this).attr('href');
+        $.ajax({
+            type: "get",
+            url: url,
+            data: {value},
+            dataType: "json",
+            success: function (response) {
+                var subtotal = $('.subtotal .amount').text().substring(1);
+                var shipping = $('.shipping .amount').text().substring(1);
+                var totalPrice = parseFloat(shipping)+parseFloat(subtotal);
+                if(!(Object.keys(response).length === 0 )&& 
+                    currentTime<= response.endtime && 
+                    currentTime >= response.starttime && 
+                    response.amount-response.remain){
+
+                    if(response.type == 'percent') {
+                        discount = parseFloat(subtotal)*response.discount/100;
+                        $('.discount').find('.amount').text('-$'+Math.round(discount * 100) / 100);
+                        $('.amount.color.lead strong').text('$'+Math.round((totalPrice - discount) * 100) / 100 );
+                    } else {
+                        $('.discount').find('.amount').text('-$'+response.discount);
+                        $('.amount.color.lead strong').text('$'+Math.round((totalPrice - response.discount) * 100) / 100 );
+                    }
+                    $('.discount').css('display', '');
+                    $('p.notify').text('Apply Coupon success').css({'display': '','color': 'green'});
+                } else {
+                    $('.discount').css('display', 'none');
+                    $('.amount.color.lead strong').text('$'+totalPrice);
+                    $('p.notify').text('Sorry this coupon is not valid or has expired').css({'display': '','color': 'red'});
+                }
+            }
+        });
+    });
+
+    // Sort price
+    if($('.sort-price').length >0){
+        var url = $(location).attr('href').split('/');
+        var sortOption = $('.sort-price').find('option');
+        sortOption.eq(1).val('/'+url[3] + '/' + url[4].split('?')[0]);
+        sortOption.eq(2).val('/'+url[3] +'/' + url[4].split('?')[0] + '?sort=desc');
+        sortOption.eq(3).val('/'+url[3] +'/' + url[4].split('?')[0] + '?sort=asc');
+    }
+    $('.sort-price').find('select').change(function(){
+        console.log($(this).val());
+        window.location = $(this).val();
+    })
 });
 

@@ -3,4 +3,8 @@ sourceByHelper = (username,time) => {
     return `<i class="fas fa-user"></i> ${username}<br>
     <i class="fas fa-clock"></i> ${moment(time).format(systemConfig.formatLongTime)}`;
 }
+couponTimeHelper = (starttime,endtime) => {
+    return `<i class="fas fa-hourglass-start"></i> ${moment(starttime).format(systemConfig.formatLongTime)}<br>
+    <i class="fas fa-hourglass-end"></i> ${moment(endtime).format(systemConfig.formatLongTime)}`;
+}
 %>

@@ -28,7 +28,9 @@ module.exports = {
             case 'itemsInCategory':
                 select = 'id name slug thumb price reduce_price menulv1 menulv2 menulv3';
                 find = {status: 'active',$or: [{menulv1:params.id},{menulv2:params.id},{menulv3:params.id}]};
-                sort = {ordering: 'asc'}
+                if (params.sort == ''){
+                    sort = {ordering: 'asc'}
+                } else sort = {price: params.sort}
                 break;
             case 'all':
                 select = 'id name slug thumb price reduce_price menulv1 menulv2 menulv3';

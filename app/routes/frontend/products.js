@@ -11,9 +11,10 @@ router.get('/:id', async function (req, res, next) {
   let items = [];
   let item = [];
   let id = paramsHelper.getParams(req.params, 'id', '');
+  let sortPrice = paramsHelper.getParams(req.query, 'sort', '');
 
   // Category
-  await productsModel.listItemsFrontend({id}, { task: 'itemsInCategory' }).then((itemsInCategory) => {
+  await productsModel.listItemsFrontend({id,sort: sortPrice}, { task: 'itemsInCategory'}).then((itemsInCategory) => {
     folderView = __path_views_frontend + 'pages/category/';
     items = itemsInCategory;
   });
