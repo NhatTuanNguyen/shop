@@ -91,6 +91,9 @@
 										class="qty" />
 									<input type="button" value="+" class="plus">
 									<input type="hidden" name="id" value="<%= item.id %>">
+									<input type="hidden" name="price" value="<%= item.reduce_price %>">
+									<input type="hidden" name="thumb" value="<%= item.thumb %>">
+									<input type="hidden" name="name" value="<%= item.name %>">
 								</div>
 								<button type="submit" class="add-to-cart button m-0">Add to cart</button>
 							</form><!-- Product Single - Quantity & Cart Button End -->

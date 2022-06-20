@@ -168,7 +168,10 @@ router.post('/save',
         usersModel.saveItems(item, taskCurrent).then(() => {
           req.flash('success', message, false);
           res.redirect(linkIndex);
-        });
+        }).catch(err => {
+          req.flash('danger', notify.ERROR_SAME_EMAIL, false);
+          res.redirect(linkIndex);
+        });;
       } else {
         let pageTitle = taskCurrent == 'add' ? pageTitleAdd : pageTitleEdit;
         if(req.file != undefined) fileHelper.remove('public/uploads/users/', req.file.filename); // xóa tấm hình khi form không hợp lệ
@@ -194,8 +197,12 @@ router.get('/sort/:sort_field/:sort_type', function (req, res, next) {
 // Filter
 router.get('/filter-group/:group_id', function (req, res, next) {
   req.session.group_id = paramsHelper.getParams(req.params, 'group_id', '');
-
-  res.redirect(linkIndex);
+  let keyword = paramsHelper.getParams(req.query, 'keyword', "");
+  if(keyword) {
+    res.redirect(linkIndex + '?keyword=' + keyword);
+  } else {
+    res.redirect(linkIndex);
+  };
 });
 
 module.exports = router;

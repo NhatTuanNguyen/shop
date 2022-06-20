@@ -3,8 +3,7 @@ const notify= require(__path_configs + 'notify');
 
 const options = {
     name: { min: 1, max: 18 },
-    ordering: { min: 0},
-    status: { value: 'novalue' },
+    novalue: { value: 'novalue' },
 }
 
 module.exports = {
@@ -14,11 +13,23 @@ module.exports = {
         req.checkBody('name', util.format(notify.ERROR_NAME, options.name.min, options.name.max) )
             .isLength({ min: options.name.min, max: options.name.max });
 
-
         // STATUS
         req.checkBody('status', notify.ERROR_STATUS)
-            .isNotEqual(options.status.value);
+            .isNotEqual(options.novalue.value);
 
+        // STATUS
+        req.checkBody('type', notify.ERROR_STATUS)
+            .isNotEqual(options.novalue.value);
+        // amount
+        req.checkBody('amount', notify.ERROR_NOTEMPTY)
+            .notEmpty(); 
+        // Slug
+        req.checkBody('discount', notify.ERROR_NOTEMPTY)
+            .notEmpty(); 
+        // Slug
+        req.checkBody('min_price', notify.ERROR_NOTEMPTY)
+            .notEmpty(); 
+        
         let errors = req.validationErrors() !== false ? req.validationErrors() : [];
        
         return errors;

@@ -7,7 +7,7 @@
 <% include ./../../helpers/sort %>
 <% include ./../../helpers/select-box %>
 <% 
-	const collection = "category";
+	const collection = "orders";
 	const linkPrefix = systemConfig.prefixAdmin + `/${collection}/`;
 %>
 
@@ -23,15 +23,15 @@
 	<div class="card-body">
 		<div class="row justify-content-between">
 			<div class="mb-1">
-				<%- filterStatusHelper(collection, statusFilter, params.keyword) %>	 
+				<%- selecBoxHelper('filter-order-status',params.orderStatusItems,params.orderStatusId,params.keyword) %> 
 			</div>
 			
 			<div class="mb-1">
-				<form action="<%= linkPrefix %>status/<%= params.currentStatus %>" method="GET">
+				<form action="<%= linkPrefix %>" method="GET">
 					<div class="input-group">
 						<input type="text" class="form-control form-control-sm" name="keyword" value="<%= params.keyword %>" style="min-width: 300px">
 						<div class="input-group-append">
-							<a type="button" class="btn btn-sm btn-danger"  href="<%= linkPrefix %>status/<%= params.currentStatus %>">Clear</a>
+							<a type="button" class="btn btn-sm btn-danger"  href="<%= linkPrefix %>">Clear</a>
 							<button type="submit" class="btn btn-sm btn-info" id="btn-search">Search</button>
 						</div>
 					</div>
@@ -52,10 +52,9 @@
 	<div class="card-body">
 		<!-- Control -->
 		<form action="" method="post" class="table-responsive" id="zt-form">
-			<%- actionHelper(collection) %>
+			<%- actionHelper(collection,0) %>
 
 			<!-- List Content -->
-		
 			<table class="table table-bordered table-hover text-nowrap btn-table mb-0">
 				<thead>
 					<tr>
@@ -66,19 +65,18 @@
 							</div>
 						</th>
 						<th class="text-center">#</th>
-						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType,'width:20%') %> 
-                        <%- sortHelper(linkPrefix,'Status','status',params.sortField,params.sortType) %> 
-                        <%- sortHelper(linkPrefix,'Ordering','ordering',params.sortField,params.sortType) %> 
-                        <%- sortHelper(linkPrefix,'Category','category.name',params.sortField,params.sortType) %> 
-                        <th class="text-center">Slug</th>
-                        <th class="text-center">Created</th>
-                        <th class="text-center">Modified</th>
+                        <%- sortHelper(linkPrefix,'Order id','order_id',params.sortField,params.sortType) %> 
+						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType) %> 
+						<th class="text-center">Status</th>
+						<th class="text-center">Phone</th>
+						<th class="text-center">email</th>
+						<%- sortHelper(linkPrefix,'Order time','time',params.sortField,params.sortType) %> 
 						<th class="text-center">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					<% if(items.length === 0){ %>
-						<tr><td colspan="10" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
+						<tr><td colspan="9" class="text-center"><h4>Không có dữ liệu</h4></td></tr>
 					<% } %>
 					<% items.forEach( (item, index) => { %>
 					<tr>
@@ -90,35 +88,20 @@
 						</td>
 
 						<td class="text-center"><%= index+1 %></td>
+						<td class="text-center"><%= item.order_id %></td>
 						<td class="text-center" style="white-space: normal;">
 							<%- highlightHelper(item.name, params.keyword) %>
 						</td>
+
 						<td class="text-center position-relative">
-							<%- statusHelper(collection, item.status, item.id) %>
+							<%- selecBoxHelper('',params.orderStatusItems,item.status.id,'','changeType',collection,item.id,1) %>
 						</td>
-						
+						<td class="text-center"><%= item.phone %></td>
+						<td class="text-center"><%= item.email %></td>
+						<td class="text-center"><%= moment(item.time).format(systemConfig.formatLongTime) %></td>
 						<td class="text-center">
-							<input style="width: 72px;" type="number" onclick="changeOrdering(this)" data-link="<%= linkPrefix %>changeOrdering/" 
-							data-id = "<%= item.id %>" class="text-center ordering" value="<%= item.ordering %>"/>
-						</td>
-
-						<td class="text-center">
-							<%# params.categoryItems.shift() %>
-							<%- selecBoxHelper('',params.categoryItems,item.category.id,'','changeType',collection,item.id) %>
-						</td>
-
-                        <td class="text-center"><%= item.slug %></td>
-						
-						<td class="text-center">
-							<%- sourceByHelper(item.created.user_name,item.created.time)%>
-						</td>
-						<td class="text-center">
-							<%- sourceByHelper(item.modified.user_name,item.modified.time)%>
-						</td>
-
-						<td class="text-center">
-							<a href="<%= linkPrefix %>form/<%= item.id %>" class="rounded-circle btn btn-sm btn-info" title="Edit">
-								<i class="fas fa-pencil-alt"></i>
+							<a href="<%= linkPrefix %>view/<%= item.id %>" class="rounded-circle btn btn-sm btn-info" title="view">
+								<i class="fas fa-eye"></i>
 							</a>
 
 							<a href="<%= linkPrefix %>delete/<%= item.id %>" class="rounded-circle btn btn-sm btn-danger" title="Delete">

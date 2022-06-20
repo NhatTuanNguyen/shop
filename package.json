@@ -25,6 +25,7 @@
     "nodemailer": "^6.7.5",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.15",
+    "order-id": "^2.1.2",
     "passport": "^0.5.2",
     "passport-local": "^1.0.0",
     "randomstring": "^1.2.2",

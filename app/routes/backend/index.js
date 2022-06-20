@@ -1,13 +1,15 @@
 var express = require('express');
 var router = express.Router();
+const middleAuthentication = require(__path_middleware + 'auth');
 
-router.use('/',require('./dashboard'));
+router.use('/',middleAuthentication,require('./dashboard'));
 router.use('/dashboard',require('./dashboard'));
-router.use('/category',require('./category'));
 router.use('/groups',require('./groups'));
 router.use('/users',require('./users'));
 router.use('/products',require('./products'));
 router.use('/coupons',require('./coupons'));
+router.use('/order-status',require('./order-status'));
+router.use('/orders',require('./orders'));
 router.use('/sliders',require('./sliders'));
 router.use('/banners',require('./banners'));
 router.use('/brands',require('./brands'));

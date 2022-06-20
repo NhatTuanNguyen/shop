@@ -1,5 +1,4 @@
-var Model = require(__path_schemas + 'category');
-var convertToSlugHelper = require(__path_helpers + 'conver-to-slug');
+var Model = require(__path_schemas + 'order-status');
 
 module.exports = {
     listItems: (params) => {
@@ -17,48 +16,16 @@ module.exports = {
             .skip((params.paginations.currentPage - 1) * params.paginations.totalItemPerPage)
     },
 
-    listItemsFrontend: (params = null,options = null) => {
-        let find ={};
-        let select = 'name';
-        let sort = {};
-        let limit = 10;
-
-        if (options.task == 'itemsSpecial') {
-            find = {status: 'active'};
-            sort = {ordering: 'asc'}
-        } else if (options.task == 'itemsCategory') {
-            select = 'name slug id category';
-            find = {status: 'active'};
-            sort = {ordering: 'asc'}
-        }else if (options.task == 'itemsCategoryParent') {
-            select = 'name slug';
-            find = {status: 'active','category.id':1};
-            sort = {ordering: 'asc'}
-        } else if (options.task == 'category') {
-            find = {status: 'active'};
-            find = {_id:params.id}
-        }
-        return Model.find(find).select(select).limit(limit).sort(sort);
-    },
-
     listItemsInSelecbox: () => {
         return Model.find({}, { name: 1, _id: 1 });
     },
 
-    listItemsCategoryParent: () => {
-        return Model.find({'category.id':1}, { name: 1, _id: 1 });
-    },
-
-    listItemsCategoryArticle: () => {
-        return Model.find({'category.id':'627bd870350f5cf79affc717'}, { name: 1, _id: 1 });
+    getItemByName: (str) => {
+        return Model.find({name: str});
     },
 
     getItems: (id) => {
         return Model.findById(id);
-    },
-
-    getItemsFromSlug: (slug) => {
-        return Model.find({ slug: slug});
     },
 
     countItems: (params) => {
@@ -96,22 +63,18 @@ module.exports = {
                 time: Date.now(),
             }
         }
-        return Model.updateOne({ _id: cids }, data);
-    },
 
-    changeType: (nameSelect, id,idType, options = 'updateOne') => {
-        let data = {
-            category: {
-                id: idType,
-                name: nameSelect,
-            },
-            modified: {
-                user_id: 0,
-                user_name: 'admin',
-                time: Date.now(),
-            }
-        }
-        return Model.updateOne({ _id: id }, data);
+        // if (Array.isArray(cids)) {
+        //     for (let i = 0; i < cids.length; i++) {
+        //         data.ordering = parseInt(orderings[i]);
+        //         await Model.updateOne({ _id: cids[i] }, data);
+        //     }
+        //     return Promise.resolve('success');
+        // } else {
+        //     return Model.updateOne({ _id: cids }, data);
+        // }
+
+        return Model.updateOne({ _id: cids }, data);
     },
 
     deleteItems: (id, options = 'deleteOne') => {
@@ -130,12 +93,7 @@ module.exports = {
                 user_id: 0,
                 user_name: 'admin',
                 time: Date.now(),
-            };
-            item.category = {
-                id: item.category_id,
-                name: item.category_name,
-            };
-            item.slug = convertToSlugHelper.convertToSlug(item.slug);
+            }
             return new Model(item).save();
 
         } else if (options == 'edit') {
@@ -144,11 +102,6 @@ module.exports = {
                 status: item.status,
                 ordering: parseInt(item.ordering),
                 content: item.content,
-                slug: convertToSlugHelper.convertToSlug(item.slug),
-                category: {
-                    id: item.category_id,
-                    name: item.category_name,
-                },
                 modified: {
                     user_id: 0,
                     user_name: 'admin',

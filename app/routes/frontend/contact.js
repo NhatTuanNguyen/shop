@@ -22,7 +22,7 @@ router.post('/save', (req, res) => {
     host: 'smtp.gmail.com',
     auth: {
       user: 'nhattuannguyenuit@gmail.com',
-      pass: 'tuan12c6'
+      pass: 'xircigasuzpqwpae'
     }
   }));
 

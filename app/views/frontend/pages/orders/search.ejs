@@ -1,0 +1,56 @@
+<div class="container">
+	<div class="view-account">
+		<section class="module">
+			<div class="module-inner">
+				<% include ./../../elements/sidebar-profile %>
+					<div class="content-panel search">
+						<h3>My Order</h3>
+						<form class="form-inline my-2 my-lg-0 d-flex flex-row" method="get">
+							<input class="form-control mr-sm-2" name="q" value="<%= orderId %>" type="search" placeholder="Search" aria-label="Search">
+							<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+						</form>
+						<% if(orderId != ''){ %> 
+						<div class="table-responsive mt-5">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class="text-center">Order ID</th>
+										<th class="text-center" style="width: 146px">Date</th>
+										<th class="text-center">Adress</th>
+										<th class="text-center" style="width: 120px">Total money </th>
+										<th class="text-center">Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<% if(item != undefined){%>
+										<% 
+											const products = JSON.parse(item.products);
+											let totalPrice = item.ship_price-item.discount; 
+											products.forEach((product)=>{
+												totalPrice += product.price*product.amount
+											});
+										%> 
+										<tr>
+											<td class="text-center code-order">
+												<a class="d-inline-block"
+													href="/orders/search/<%= item.order_id %>">#<%= item.order_id %></a>
+											</td>
+											<td><%= moment(item.time).format(systemConfig.formatLongTime) %></td>
+											<td class="text-center"><%= item.address+','+item.city+','+item.district+','+item.ward %></td>
+											<td class="text-center">$<%= Math.round(totalPrice * 100) / 100 %></td>
+											<td class="text-center"><span class="status-order d-inline-block"><%= item.status.name %></span></td>
+										</tr>
+									<%} else {%>
+										<tr>
+											<td colspan="5" class="text-center">Order not found</td>
+										</tr>
+									<%}%>
+								</tbody>
+							</table>
+						</div>
+						<%}%>
+					</div>
+			</div>
+		</section>
+	</div>
+</div>

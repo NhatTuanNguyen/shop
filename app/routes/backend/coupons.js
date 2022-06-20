@@ -120,6 +120,7 @@ router.get('/form(/:id)?', async function (req, res, next) {
 router.post('/save', (req, res, next) => {
 
     let item = Object.assign(req.body);
+    item.remain = item.amount;
     let taskCurrent = (typeof item !== 'undefined' && item.id !== "") ? 'edit' : 'add';
 
     let errors = validatorcoupons.validator(req);

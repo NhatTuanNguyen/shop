@@ -168,11 +168,12 @@ $(document).ready(function (e) {
 
     $('select[name="filter_category"]').change(function () {
         var path = window.location.pathname.split('/');
-        let keyword = $(this).attr('data-link');
         var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-category/' + $(this).val();
-        if (keyword) {
-            linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-category/' + $(this).val() + keyword;  
-        } 
+        window.location.pathname = linkRedirect;
+    });
+    $('select[name="filter-order-status"]').change(function () {
+        var path = window.location.pathname.split('/');
+        var linkRedirect = '/' + path[1] + '/' + path[2] + '/filter-order-status/' + $(this).val();
         window.location.pathname = linkRedirect;
     });
 

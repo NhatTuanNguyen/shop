@@ -22,10 +22,10 @@ module.exports = {
         return Model.findById(id);
     },
 
-    getByUsername: (username,options=null) => {
+    getByEmail: (email,options=null) => {
         if(options == null) {
-            return Model.find({status: 'active',username: username})
-                        .select('username password');
+            return Model.find({status: 'active',email: email})
+                        .select('email password');
         }
     },
 
@@ -108,52 +108,143 @@ module.exports = {
     },
 
     saveItems: (item, options = 'add') => {
-
-        if (options == 'add') {
-            item.password = crypto.createHash('md5').update(item.password).digest("hex");
-            item.created = {
-                user_id: 0,
-                user_name: 'admin',
-                time: Date.now(),
-            };
-            item.group = {
-                id: item.group_id,
-                name: item.group_name,
-            };
-            return new Model(item).save();
-
-        } else if (options == 'edit') {
-            return Model.updateOne({ _id: item.id }, {
-                name: item.name,
-                username: item.username,
-                password: crypto.createHash('md5').update(item.password).digest("hex"),
-                status: item.status,
-                ordering: parseInt(item.ordering),
-                content: item.content,
-                avatar: item.avatar,
-                group: {
+        switch (options){
+            case 'add':
+                item.password = crypto.createHash('md5').update(item.password).digest("hex");
+                item.created = {
+                    user_id: 0,
+                    user_name: 'admin',
+                    time: Date.now(),
+                };
+                item.group = {
                     id: item.group_id,
                     name: item.group_name,
-                },
-                modified: {
-                    user_id: 0,
-                    user_name: 'admin',
-                    time: Date.now(),
-                }
-            });
-        } else if (options == 'changeGroupName') {
-            return Model.updateMany({ 'group.id': item.id }, {
-
-                group: {
-                    id: item.id,
+                };
+                return new Model(item).save();
+            case 'edit':
+                return Model.updateOne({ _id: item.id }, {
                     name: item.name,
-                },
-                modified: {
+                    email: item.email,
+                    password: crypto.createHash('md5').update(item.password).digest("hex"),
+                    status: item.status,
+                    ordering: parseInt(item.ordering),
+                    phone: item.phone,
+                    avatar: item.avatar,
+                    group: {
+                        id: item.group_id,
+                        name: item.group_name,
+                    },
+                    modified: {
+                        user_id: 0,
+                        user_name: 'admin',
+                        time: Date.now(),
+                    }
+                });
+            case 'signup':
+                item.password = crypto.createHash('md5').update(item.password).digest("hex");
+                item.status='active';
+                item.ordering = 1;
+                item.created = {
                     user_id: 0,
                     user_name: 'admin',
                     time: Date.now(),
-                }
-            });
+                };
+                item.group = {
+                    id: '628f589609238397d2a14482',
+                    name: 'public',
+                };
+                return new Model(item).save();
+            case 'changeGroupName':
+                return Model.updateMany({ 'group.id': item.id }, {
+        
+                    group: {
+                        id: item.id,
+                        name: item.name,
+                    },
+                    modified: {
+                        user_id: 0,
+                        user_name: 'admin',
+                        time: Date.now(),
+                    }
+                });
+            case 'profile':
+                return Model.updateOne({ _id: item.id }, {
+                    name: item.name,
+                    avatar: item.avatar,
+                    phone: item.phone,
+                    city: item.city,
+                    district: item.district,
+                    ward: item.ward,
+                    address: item.address,
+                    modified: {
+                        user_id: 0,
+                        user_name: 'admin',
+                        time: Date.now(),
+                    }
+                });
         }
+
+        // if (options == 'add') {
+        //     item.password = crypto.createHash('md5').update(item.password).digest("hex");
+        //     item.created = {
+        //         user_id: 0,
+        //         user_name: 'admin',
+        //         time: Date.now(),
+        //     };
+        //     item.group = {
+        //         id: item.group_id,
+        //         name: item.group_name,
+        //     };
+        //     return new Model(item).save();
+
+        // } else if (options == 'edit') {
+        //     return Model.updateOne({ _id: item.id }, {
+        //         name: item.name,
+        //         email: item.email,
+        //         password: crypto.createHash('md5').update(item.password).digest("hex"),
+        //         status: item.status,
+        //         ordering: parseInt(item.ordering),
+        //         phone: item.phone,
+        //         avatar: item.avatar,
+        //         group: {
+        //             id: item.group_id,
+        //             name: item.group_name,
+        //         },
+        //         modified: {
+        //             user_id: 0,
+        //             user_name: 'admin',
+        //             time: Date.now(),
+        //         }
+        //     });
+        // } else if (options == 'signup') {
+            
+        //     item.password = crypto.createHash('md5').update(item.password).digest("hex");
+        //     item.status='active';
+        //     item.ordering = 1;
+        //     item.created = {
+        //         user_id: 0,
+        //         user_name: 'admin',
+        //         time: Date.now(),
+        //     };
+        //     item.group = {
+        //         id: '628f589609238397d2a14482',
+        //         name: 'public',
+        //     };
+        //     return new Model(item).save();
+
+        // } else if (options == 'changeGroupName') {
+        //     return Model.updateMany({ 'group.id': item.id }, {
+
+        //         group: {
+        //             id: item.id,
+        //             name: item.name,
+        //         },
+        //         modified: {
+        //             user_id: 0,
+        //             user_name: 'admin',
+        //             time: Date.now(),
+        //         }
+        //     });
+        // }
     },
 }

@@ -29,7 +29,7 @@
 			</div>
 			
 			<div class="col-sm-2">
-				<%- selecBoxHelper('filter_group',params.groupItems,params.groupId) %>
+				<%- selecBoxHelper('filter_group',params.groupItems,params.groupId,params.keyword) %>
 			</div>
 			
 			<div class="mb-1">
@@ -73,6 +73,7 @@
 						</th>
 						<th class="text-center">#</th>
 						<%- sortHelper(linkPrefix,'Name','name',params.sortField,params.sortType) %> 
+						<%- sortHelper(linkPrefix,'Email','email',params.sortField,params.sortType) %> 
                         <th class="text-center">Avatar</th>
                         <%- sortHelper(linkPrefix,'Status','status',params.sortField,params.sortType) %> 
                         <%- sortHelper(linkPrefix,'Ordering','ordering',params.sortField,params.sortType) %> 
@@ -99,7 +100,7 @@
 						<td class="text-center" style="white-space: normal;">
 							<%- highlightHelper(item.name, params.keyword) %>
 						</td>
-
+						<td class="text-center" style="white-space: normal;"><%= item.email %></td>
                         <td class="text-center">
                             <%- imgHelper(folderUpload,item.avatar) %>
                         </td>
@@ -115,7 +116,7 @@
 
                         <td class="text-center">
 							<%# params.groupItems.shift() %>
-							<%- selecBoxHelper('',params.groupItems,item.group.id,'','changeType',collection,item.id) %>
+							<%- selecBoxHelper('',params.groupItems,item.group.id,'','changeType',collection,item.id,1) %>
 						</td>
 						
 						<td class="text-center">

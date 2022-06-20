@@ -1,0 +1,56 @@
+<div class="container">
+	<div class="view-account">
+		<section class="module">
+			<div class="module-inner">
+				<% include ./../../elements/sidebar-profile %> 
+				<div class="content-panel">
+					<h3>My Profile</h3>
+					<form class="form-horizontal" method="post" action="/profile">
+						<div class="row mb-0">
+							<div class="col-md-6 form-group">
+								<label for="shipping-form-name">Name</label>
+								<input type="text" id="shipping-form-name" name="name" value="<%= userInfo.name %>"
+								 class="sm-form-control" />
+							</div>
+
+							<div class="col-md-6 form-group">
+								<label for="shipping-form-name">Phone</label>
+								<input type="text" id="shipping-form-phone" name="phone" value="<%= userInfo.phone %>"
+								 class="sm-form-control" />
+							</div>
+							<div class="col-12 form-group">
+								<label for="shipping-form-email">Email</label>
+								<input type="email" id="shipping-form-email" name="email" value="<%= userInfo.email %>"
+									class="sm-form-control" disabled />
+							</div>
+							<label for="shipping-form-address">Address</label>
+							<div class="col-md-4 form-group">
+								<select data-value="<%= userInfo.city %>" name="city" class="sm-form-control " required>
+									<option value="">Choose City</option>
+								</select>
+							</div>
+							<div class="col-md-4 form-group">
+								<select data-value="<%= userInfo.district %>" name="district" class="sm-form-control " required>
+									<option value="">Choose District</option>
+								</select>
+							</div>
+							<div class="col-md-4 form-group">
+								<select data-value="<%= userInfo.ward %>" name="ward" class="sm-form-control " required>
+									<option value="">Choose Ward</option>
+								</select>
+							</div>
+							<div class="col-12 form-group">
+								<input type="text" id="shipping-form-address" name="address" value="<%= userInfo.address %>"
+									 class="sm-form-control" />
+							</div>
+							<div class="col-12 form-group">
+								<input type="hidden" name="id" value="<%= userInfo.id %>">
+								<button class="button button-3d m-0" type="submit" id="template-contactform-submit" >Save</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

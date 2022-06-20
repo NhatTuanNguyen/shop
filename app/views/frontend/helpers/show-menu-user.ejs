@@ -5,17 +5,20 @@
         let linkAdmin = systemConfig.prefixAdmin + '/dashboard';
         let xhtml = '';
         if(Object.keys(userInfo).length > 0) {
-            xhtml += `<li><a href="#">${userInfo.username}</a>
-                    <ul class="dropdown">
-                        <li><a href="${linkLogout}">Logout</a></li>`;
+            xhtml += `<li class="user-info" style="list-style: none;">
+                        <a href="${linkLogin}"><i class="far fa-user"></i></a>
+                        <ul class="dropdown-menu" style="right:-78px">
+                            <li><a class="dropdown-item" href="/profile">${userInfo.name}</a></li>`;
 
-            if(userInfo.username == 'admin') {
-                xhtml += `<li><a href="${linkAdmin}">Admin Control Panel</a></li>`
+            if(userInfo.group.name == 'admin') {
+                xhtml += `<li><a class="dropdown-item" href="${linkAdmin}">Admin Control Panel</a></li>`
             }
-            xhtml += `</ul></li>`
+            xhtml += `<div class="dropdown-divider"></div><li><a class="dropdown-item" href="${linkLogout}">Logout <i class="icon-signout"></i></a></li></ul></li>`
 
         } else {
-            xhtml += `<li><a href="${linkLogin}">Login</a></li>`;
+            xhtml += `<li class="user-info" style="list-style: none;">
+                        <a href="${linkLogin}"><i class="far fa-user"></i></a>
+                    </li>`;
         }
         return xhtml;
     }

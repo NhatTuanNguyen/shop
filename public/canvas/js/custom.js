@@ -5,11 +5,10 @@ $(document).ready(async function (e) {
         if(a==b){
             $(this).addClass("current");
         }
-        if(a=='' && b=='Home') {
+        if(a=='' && b=='Home'&& window.location.pathname=='/') {
             $(this).addClass("current");
         }
     });
-
     // Save cart to localStorage
     const ajaxShowCart =async (link,data,alert=false,checkYourCart=false) => {
         await $.ajax({
@@ -90,8 +89,10 @@ $(document).ready(async function (e) {
                     totalPrice += item.amount*item.reduce_price;
 
                     });
-                    $('.yourcart').find('.top-cart-items').html(html);
-                }
+                    
+                } else html = `<p class="text-center m-0">No product</p>`;
+                
+                $('.yourcart').find('.top-cart-items').html(html);
                 $('.top-cart-number').text(response.length);
                 $('.total-price').text('$'+Math.round(totalPrice * 100) / 100 );
                 if(alert){
@@ -134,6 +135,9 @@ $(document).ready(async function (e) {
         
         var url = $(this).attr('href');
         var id = $(this).attr('data-id');
+        var price = $(this).attr('data-price');
+        var thumb = $(this).attr('data-thumb');
+        var name = $(this).attr('data-name');
         var data = JSON.parse(localStorage.getItem("cart"));
         if(data == null) data=[] 
         
@@ -146,9 +150,9 @@ $(document).ready(async function (e) {
                     break;
                 }
             }
-            if(!checkIdSample) data.push({id,amount: 1});
+            if(!checkIdSample) data.push({id,amount: 1,name,price,thumb});
         } else {
-            data.push({id,amount: 1});
+            data.push({id,amount: 1,name,price,thumb});
         }
         localStorage.setItem('cart',JSON.stringify(data));
         ajaxShowCart(url,{'cart': localStorage.getItem('cart')},true)
@@ -159,6 +163,9 @@ $(document).ready(async function (e) {
         var actionUrl = form.attr('action');
         var amount = parseInt(form.find('input[name="amount"]').val());
         var id = form.find('input[name="id"]').val();
+        var price = form.find('input[name="price"]').val();
+        var thumb = form.find('input[name="thumb"]').val();
+        var name = form.find('input[name="name"]').val();
         var data = JSON.parse(localStorage.getItem("cart"));
         if(data == null) data=[] 
         
@@ -171,9 +178,9 @@ $(document).ready(async function (e) {
                     break;
                 }
             }
-            if(!checkIdSample) data.push({id,amount});
+            if(!checkIdSample) data.push({id,amount,name,price,thumb});
         } else {
-            data.push({id,amount});
+            data.push({id,amount,name,price,thumb});
         }
         localStorage.setItem('cart',JSON.stringify(data));
         ajaxShowCart(actionUrl,{'cart': localStorage.getItem('cart')},true)
@@ -195,7 +202,10 @@ $(document).ready(async function (e) {
         localStorage.setItem('cart',JSON.stringify(data));
         if($('.remove').length > 1){
             $(this).closest('.cart_item').remove();
-        } else $('.table.cart').replaceWith( "<h2 class='text-center'>Your cart is empty</h2>");
+        } else{
+            $('.table.cart').replaceWith( "<h2 class='text-center'>Your cart is empty</h2>");
+            $('.navigation-button').css('display','none');
+        } 
 
         
 
@@ -205,7 +215,7 @@ $(document).ready(async function (e) {
 
         $('.amount.color.lead strong').text('$'+Math.round(totalPrice * 100) / 100);
         ajaxShowCart('/cart',{'cart': localStorage.getItem('cart')});
-        $('.navigation-button').css('display','none');
+        
     });
 
     // increase or decrease the number of items
@@ -251,6 +261,7 @@ $(document).ready(async function (e) {
         var currentTime = new Date().toISOString();
         let value = $(this).closest('.row').find('input').val();
         let url = $(this).attr('href');
+        
         $.ajax({
             type: "get",
             url: url,
@@ -269,16 +280,21 @@ $(document).ready(async function (e) {
                         discount = parseFloat(subtotal)*response.discount/100;
                         $('.discount').find('.amount').text('-$'+Math.round(discount * 100) / 100);
                         $('.amount.color.lead strong').text('$'+Math.round((totalPrice - discount) * 100) / 100 );
+                        $('input[name="discount"]').val(Math.round(discount * 100) / 100);
                     } else {
                         $('.discount').find('.amount').text('-$'+response.discount);
                         $('.amount.color.lead strong').text('$'+Math.round((totalPrice - response.discount) * 100) / 100 );
+                        $('input[name="discount"]').val(response.discount );
                     }
                     $('.discount').css('display', '');
                     $('p.notify').text('Apply Coupon success').css({'display': '','color': 'green'});
+                    $('input[name="coupon"]').val(value);
                 } else {
                     $('.discount').css('display', 'none');
                     $('.amount.color.lead strong').text('$'+totalPrice);
                     $('p.notify').text('Sorry this coupon is not valid or has expired').css({'display': '','color': 'red'});
+                    $('input[name="discount"]').val(0);
+                    $('input[name="coupon"]').val('');
                 }
             }
         });
@@ -293,8 +309,103 @@ $(document).ready(async function (e) {
         sortOption.eq(3).val('/'+url[3] +'/' + url[4].split('?')[0] + '?sort=asc');
     }
     $('.sort-price').find('select').change(function(){
-        console.log($(this).val());
         window.location = $(this).val();
-    })
+    });
+
+    // Load provinces of Viet Nam
+    const optionsHtml =(data,name='')=>{
+        var htmls
+        if(name==''){
+            htmls = data.map((item)=>{
+                return `<option value="${item.name}">${item.name}</option>`
+            });
+        } else {
+            htmls = data.map((item)=>{
+                if(item.name == name) return `<option value="${item.name}" selected="selected">${item.name}</option>`
+                return `<option value="${item.name}">${item.name}</option>`
+            });
+        }
+        return htmls.join('');
+    }
+
+    if(window.location.pathname == '/cart/checkout' || window.location.pathname == '/profile'){
+        var provincesData = []; 
+        await fetch('https://provinces.open-api.vn/api/?depth=3')
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => provincesData = data)
+            .catch((error) =>console.log(error));
+
+        var html = '<option value="">Choose City</option>';
+        var valueCity = $('select[name="city"]').attr('data-value');
+        html += optionsHtml(provincesData,valueCity);
+        $('select[name="city"]').html(html);
+
+        var valueDistrict = $('select[name="district"]').attr('data-value');
+        var valueWard = $('select[name="ward"]').attr('data-value');
+        if(valueDistrict != ''){
+            const district = provincesData.filter(item => item.name == valueCity)[0].districts;
+            var htmlDistrict = '<option value="">Choose District</option>';
+            htmlDistrict += optionsHtml(district,valueDistrict);
+            $('select[name="district"]').html(htmlDistrict);
+
+            const ward = district.filter(item => item.name == valueDistrict)[0].wards;
+            var htmlWard = '<option value="">Choose Ward</option>';
+            htmlWard += optionsHtml(ward,valueWard);
+            $('select[name="ward"]').html(htmlWard);
+        }
+        
+
+        $('select[name="city"]').change(function(){
+            var cityName = $(this).val();
+
+            const district = provincesData.filter(item => item.name == cityName)[0].districts;
+            var htmlDistrict = '<option value="">Choose District</option>';
+            htmlDistrict += optionsHtml(district);
+            $('select[name="district"]').html(htmlDistrict);
+            $('select[name="ward"]').html('<option value="">Choose Ward</option>');
+        });
+
+        $('select[name="district"]').change(function(){
+            var cityName = $('select[name="city"]').val();
+            var districtName = $(this).val();
+            const district = provincesData.filter(item => item.name == cityName)[0].districts;
+            const ward = district.filter(item => item.name == districtName)[0].wards;
+            var htmlWard = '<option value="">Choose Ward</option>';
+            htmlWard += optionsHtml(ward);
+            $('select[name="ward"]').html(htmlWard);
+        });
+
+        // infomation products
+        $('input[name="products"]').val(localStorage.getItem('cart'));
+        
+    }
+
+    // Set validate Re-password
+    if(window.location.pathname == '/auth/login'){
+        function validatePassword(password,confirm_password){
+            if(password.val() != confirm_password.val()) {
+              confirm_password[0].setCustomValidity("Passwords Don't Match");
+            } else {
+              confirm_password[0].setCustomValidity('');
+            }
+          }
+
+        var password = $('#register-password');
+        var repassword = $('#repassword');
+        password.change(function(){validatePassword(password,repassword)});
+        repassword.keyup(function(){validatePassword(password,repassword)})
+    }
+
+    $('#checkout-form').submit(function(){
+        localStorage.removeItem('cart');
+    });
+ 
+    // Active page profile
+    var url = window.location.href;
+    $(".nav li a").each(function() {
+        if(this.href == url) $(this).parents('li').addClass('active');
+    });
 });
 

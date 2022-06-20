@@ -7,10 +7,10 @@ module.exports = {
         return Model
             .find({})
             .limit(limit)
-            .sort({ createdTime: 'desc' });
+            .sort({ time: 'desc' });
     },
     saveItems: (item) => {
-        item.createdTime = Date.now();
+        item.time = Date.now();
         return new Model(item).save();
     },
 }

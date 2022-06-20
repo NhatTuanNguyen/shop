@@ -1,0 +1,70 @@
+<% const folderUpload = '/uploads/products/' %>
+
+<div class="row">
+	<!-- left column -->
+	<div class="col-md-12">
+		<!-- jquery validation -->
+		<div class="card card-primary mt-3">
+			<div class="card-header">
+				<h3 class="card-title">Order details: <%=item.name %></h3>
+				
+			</div>
+			<div class="customer mt-3">
+				<ul>
+					<li><strong>Order id: </strong><%=item.order_id %></li>
+					<li><strong>Name: </strong><%=item.name %></li>
+					<li><strong>Phone number: </strong><%=item.phone %></li>
+					<li><strong>Adress: </strong><%= item.address+','+item.city+','+item.district+','+item.ward %></li>
+					<li><strong>Email: </strong><%=item.email %></li>
+					<li><strong>Notes: </strong><%=item.notes %></li>
+				</ul>
+			</div>
+		
+			<div class="carts">
+				<table class="table table-hover text-nowrap btn-table mb-0">
+					<% 
+						const products = JSON.parse(item.products);
+						let totalPrice = item.ship_price-item.discount; 
+					%> 
+					<thead>
+						<tr>
+							<th class="text-center">IMG</th>
+							<th class="text-center" style="width: 100px">Product</th>
+							<th class="text-center">Price</th>
+							<th class="text-center">Quantity</th>
+							<th class="text-center">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% products.forEach((product) =>{%>
+						<% totalPrice += product.price*product.amount %> 
+						<tr>
+							<td class="text-center">
+								<img src="<%= folderUpload+product.thumb %>" alt="IMG" style="width: 100px">
+							</td>
+							<td class="text-center"><%= product.name %></td>
+							<td class="text-center">$<%= product.price %></td>
+							<td class="text-center"><%= product.amount %></td>
+							<td class="text-center">$<%= product.price*product.amount %></td>
+						</tr>
+						<% }) %>
+						<tr>
+							<td colspan="3"></td>
+							<td class="text-center">
+								<p>Shipping: </p>
+								<p>Discount: </p>
+								<strong>Total price: </strong>
+							</td>
+							<td class="text-center">
+								<p>$<%=item.ship_price %></p>
+								<p style="color:red">-$<%=item.discount %></p>
+								<strong>$<%= Math.round(totalPrice * 100) / 100 %></strong>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
+		</div>
+	</div>
+</div>

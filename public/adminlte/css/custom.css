@@ -1,7 +1,12 @@
 body {
     font-family: 'Helvetica Neue', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
         'Segoe UI', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+    
 }
+/* 
+.text-sm {
+    font-size: 1rem!important;
+} */
 
 table.table.btn-table td {
     vertical-align: middle;
@@ -63,6 +68,10 @@ a.my-active {
 
 span.highlight {
     background-color: #e5f421;
+}
+
+li{
+    list-style: none;
 }
 
 .img-avatar {

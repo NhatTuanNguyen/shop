@@ -53,7 +53,10 @@
 							<%}%>
 							<div class="bg-overlay">
 								<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-									<a data-id="<%= item.id %>" href="/cart" class="btn btn-dark me-2 add-cart"><i class="icon-shopping-cart"></i></a>
+									<a data-id="<%= item.id %>" 
+										data-price="<%= item.reduce_price %>" 
+										data-name="<%= item.name %>" 
+										data-thumb="<%= item.thumb %>" href="/cart" class="btn btn-dark me-2 add-cart"><i class="icon-shopping-cart"></i></a>
 									<a href="include/ajax/shop-item.html" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
 								</div>
 								<div class="bg-overlay-bg bg-transparent"></div>

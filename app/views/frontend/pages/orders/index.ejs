@@ -1,0 +1,53 @@
+<div class="container">
+	<div class="view-account">
+		<section class="module">
+			<div class="module-inner">
+				<% include ./../../elements/sidebar-profile %>
+					<div class="content-panel">
+						<h3>My Order</h3>
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th class="text-center">Order ID</th>
+										<th class="text-center" style="width: 146px">Date</th>
+										<th class="text-center">Adress</th>
+										<th class="text-center" style="width: 120px">Total money </th>
+										<th class="text-center">Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<% if(items.length > 0){%>
+										<% items.forEach((item)=>{%>
+											<% 
+												const products = JSON.parse(item.products);
+												let totalPrice = item.ship_price-item.discount; 
+												products.forEach((product)=>{
+													totalPrice += product.price*product.amount
+												});
+											%> 
+										<tr>
+											<td class="text-center code-order">
+												<a class="d-inline-block"
+													href="/orders/<%= item.order_id %>">#<%= item.order_id %></a>
+											</td>
+											<td><%= moment(item.time).format(systemConfig.formatLongTime) %></td>
+											<td class="text-center"><%= item.address+','+item.city+','+item.district+','+item.ward %></td>
+											<td class="text-center">$<%= Math.round(totalPrice * 100) / 100 %></td>
+											<td class="text-center"><span class="status-order d-inline-block"><%= item.status.name %></span></td>
+										</tr>
+										<%})%>
+									<%} else {%>
+										<tr>
+											<td colspan="5" class="text-center">No orders</td>
+										</tr>
+									<%}%>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+			</div>
+		</section>
+	</div>
+</div>

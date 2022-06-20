@@ -5,7 +5,7 @@ const options = {
     name: { min: 5, max: 30 },
     ordering: { min: 0, max: 100 },
     status: { value: 'novalue' },
-    group: { value: 'allvalue' },
+    group: { value: 'novalue' },
     content: { min: 5, max: 200 },
 }
 
@@ -27,10 +27,15 @@ module.exports = {
         req.checkBody('group_id', notify.ERROR_GROUP)
             .isNotEqual(options.group.value);
 
-        // CONTENT
-        req.checkBody('content', util.format(notify.ERROR_NAME, options.content.min, options.content.max) )
-            .isLength({ min: options.content.min, max: options.content.max });
-
+        // emal
+        req.checkBody('email', notify.ERROR_NOTEMPTY)
+            .notEmpty(); 
+        // phone
+        req.checkBody('phone', notify.ERROR_NOTEMPTY)
+            .notEmpty()
+        // password
+        req.checkBody('email', notify.ERROR_NOTEMPTY)
+            .notEmpty()
 
         let errors = req.validationErrors() !== false ? req.validationErrors() : [];
         
