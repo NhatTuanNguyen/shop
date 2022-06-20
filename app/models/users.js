@@ -125,7 +125,7 @@ module.exports = {
                 return Model.updateOne({ _id: item.id }, {
                     name: item.name,
                     email: item.email,
-                    password: crypto.createHash('md5').update(item.password).digest("hex"),
+                    // password: crypto.createHash('md5').update(item.password).digest("hex"),
                     status: item.status,
                     ordering: parseInt(item.ordering),
                     phone: item.phone,
