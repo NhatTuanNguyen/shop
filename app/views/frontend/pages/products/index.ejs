@@ -447,27 +447,35 @@
 				<h4>YOU MIGHT ALSO LIKE</h4>
 				<div class="owl-carousel product-carousel carousel-widget" data-margin="30" data-pagi="false"
 					data-autoplay="5000" data-items-xs="1" data-items-md="2" data-items-lg="3" data-items-xl="4">
+					<% if(randomItems.length > 0){%> 
+					<% randomItems.forEach((randomItem)=>{%>  
 					<div class="oc-item">
 						<div class="product">
 							<div class="product-image">
-								<a href="#"><img src="/canvas/images/shop/dress/1.jpg" alt="Checked Short Dress"></a>
-								<a href="#"><img src="/canvas/images/shop/dress/1-1.jpg" alt="Checked Short Dress"></a>
-								<div class="badge bg-success p-2">50% Off*</div>
+								<a href="#"><img src="<%= folderUpload+randomItem.thumb %> " alt="Checked Short Dress"></a>
+								<!-- <a href="#"><img src="/canvas/images/shop/dress/1-1.jpg" alt="Checked Short Dress"></a> -->
+								<!-- <div class="sale-flash badge bg-secondary p-2">Out of Stock</div> -->
+								<% if(randomItem.price > randomItem.reduce_price){%> 
+									<div class="sale-flash badge bg-success p-2 text-uppercase">Sale!</div>
+								<%}%>
 								<div class="bg-overlay">
-									<div class="bg-overlay-content align-items-end justify-content-between"
-										data-hover-animate="fadeIn" data-hover-speed="400">
-										<a href="#" class="btn btn-dark me-2"><i class="icon-shopping-cart"></i></a>
-										<a href="include/ajax/shop-item.html" class="btn btn-dark"
-											data-lightbox="ajax"><i class="icon-line-expand"></i></a>
+									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
+										<a data-id="<%= randomItem.id %>" 
+											data-price="<%= randomItem.reduce_price %>" 
+											data-name="<%= randomItem.name %>" 
+											data-thumb="<%= randomItem.thumb %>" href="/cart" class="btn btn-dark me-2 add-cart"><i class="icon-shopping-cart"></i></a>
+										<a href="include/ajax/shop-item.html" class="btn btn-dark" data-lightbox="ajax"><i class="icon-line-expand"></i></a>
 									</div>
 									<div class="bg-overlay-bg bg-transparent"></div>
 								</div>
 							</div>
-							<div class="product-desc center">
-								<div class="product-title">
-									<h3><a href="#">Checked Short Dress</a></h3>
-								</div>
-								<div class="product-price"><del>$24.99</del> <ins>$12.49</ins></div>
+							<div class="product-desc ">
+								<div class="product-title "><h3><a class="name-product" href="/<%= randomItem.slug+'/'+randomItem.id %>"><%= formatSummary(randomItem.name,36) %></a></h3></div>
+								<% if(randomItem.price == randomItem.reduce_price){%> 
+									<div class="product-price">$<%= randomItem.price %></div>
+								<%} else { %> 
+									<div class="product-price"><del>$<%= randomItem.price %></del> <ins>$<%= randomItem.reduce_price %></ins></div>
+								<%} %>
 								<div class="product-rating">
 									<i class="icon-star3"></i>
 									<i class="icon-star3"></i>
@@ -478,6 +486,8 @@
 							</div>
 						</div>
 					</div>
+					<%}) %>
+					<%} %>
 				</div>
 
 			</div>

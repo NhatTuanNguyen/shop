@@ -33,10 +33,17 @@ module.exports = {
                 } else sort = {price: params.sort}
                 break;
             case 'all':
+                find={status: 'active'}
                 select = 'id name slug thumb price reduce_price menulv1 menulv2 menulv3';
                 sort = {ordering: 'asc'};
                 limit = 16
                 break;
+            case 'random':
+                return Model.aggregate([
+                    {$match:{status: 'active'}},
+                    {$project:{_id: 1,name:1,created:1,thumb:1,category:1,slug:1}},
+                    {$sample:{size: 10}},
+                ]);
         }
 
         return Model.find(find).select(select).limit(limit).sort(sort);
@@ -51,10 +58,8 @@ module.exports = {
             case 'findOne':
                 return Model.findById(params.id)
                     .select('name thumb menulv1 menulv2 menulv3 price reduce_price description');
-                break;
             case 'findMultiple':
                 return Model.find({_id: {$in: params.id}}).select('name slug thumb price reduce_price');
-                break;
         }
     },
 
