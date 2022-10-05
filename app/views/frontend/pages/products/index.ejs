@@ -1,4 +1,5 @@
 <% const folderUpload='/uploads/products/' %>
+<% include ./../../helpers/format-summary %>
 <!-- Page Title
 	============================================= -->
 <section id="page-title">
@@ -452,7 +453,7 @@
 					<div class="oc-item">
 						<div class="product">
 							<div class="product-image">
-								<a href="#"><img src="<%= folderUpload+randomItem.thumb %> " alt="Checked Short Dress"></a>
+								<a href="#"><img src="<%= folderUpload+randomItem.thumb %>" alt="Checked Short Dress"></a>
 								<!-- <a href="#"><img src="/canvas/images/shop/dress/1-1.jpg" alt="Checked Short Dress"></a> -->
 								<!-- <div class="sale-flash badge bg-secondary p-2">Out of Stock</div> -->
 								<% if(randomItem.price > randomItem.reduce_price){%> 
@@ -460,7 +461,7 @@
 								<%}%>
 								<div class="bg-overlay">
 									<div class="bg-overlay-content align-items-end justify-content-between" data-hover-animate="fadeIn" data-hover-speed="400">
-										<a data-id="<%= randomItem.id %>" 
+										<a data-id="<%= randomItem._id %>" 
 											data-price="<%= randomItem.reduce_price %>" 
 											data-name="<%= randomItem.name %>" 
 											data-thumb="<%= randomItem.thumb %>" href="/cart" class="btn btn-dark me-2 add-cart"><i class="icon-shopping-cart"></i></a>
@@ -470,7 +471,7 @@
 								</div>
 							</div>
 							<div class="product-desc ">
-								<div class="product-title "><h3><a class="name-product" href="/<%= randomItem.slug+'/'+randomItem.id %>"><%= formatSummary(randomItem.name,36) %></a></h3></div>
+								<div class="product-title"><h3><a class="name-product" href="/<%= randomItem.slug+'/'+randomItem._id %>"><%= formatSummary(randomItem.name,36) %></a></h3></div>
 								<% if(randomItem.price == randomItem.reduce_price){%> 
 									<div class="product-price">$<%= randomItem.price %></div>
 								<%} else { %> 

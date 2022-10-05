@@ -265,12 +265,12 @@ $(document).ready(function (e) {
         e.preventDefault();
         const id = $(this).attr('data-id');
         const idType = $(this).val();
-        // const nameSelect = $(this).find(`option[value="${idType}"]`).text();
+        const nameSelect = $(this).find(`option[value="${idType}"]`).text();
         const link = $(this).attr('data-link') + 'changeType';
         $.ajax({
             type: "post",
             url: link,
-            data: { id, idType },
+            data: { nameSelect, id, idType },
             dataType: "text",
             success: function (response) {
                 Swal.fire({

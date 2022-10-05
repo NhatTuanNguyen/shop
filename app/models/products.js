@@ -41,7 +41,7 @@ module.exports = {
             case 'random':
                 return Model.aggregate([
                     {$match:{status: 'active'}},
-                    {$project:{_id: 1,name:1,created:1,thumb:1,category:1,slug:1}},
+                    {$project:{_id: 1,name:1,thumb:1,price:1,reduce_price:1,slug:1}},
                     {$sample:{size: 10}},
                 ]);
         }
