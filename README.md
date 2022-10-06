@@ -23,8 +23,8 @@ Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-
 ```
 3. Running
 
-```
-bash npm start
+```bash
+    npm start
 ```
 
 ## Contact
