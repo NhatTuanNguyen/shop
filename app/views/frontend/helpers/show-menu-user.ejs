@@ -2,7 +2,7 @@
     showMenuUser = (userInfo) => {
         let linkLogin = systemConfig.prefixBlog + '/auth/login';
         let linkLogout = systemConfig.prefixBlog + '/auth/logout';
-        let linkAdmin = systemConfig.prefixAdmin + '/dashboard';
+        let linkAdmin = '/'+systemConfig.prefixAdmin + '/dashboard';
         let xhtml = '';
         if(Object.keys(userInfo).length > 0) {
             xhtml += `<li class="user-info" style="list-style: none;">

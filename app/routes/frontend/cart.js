@@ -58,7 +58,7 @@ router.post('/order',async function (req, res, next){
     host: 'smtp.gmail.com',
     auth: {
       user: 'nhattuannguyenuit@gmail.com',
-      pass: 'xircigasuzpqwpae'
+      pass: 'pzaiqllppwwanogf'
     }
   }));
   
@@ -80,6 +80,7 @@ router.post('/order',async function (req, res, next){
   ordersModel.saveItems(item).then(()=>{
     req.flash('success', notify.ORDER_SUCCESS, false);
     res.redirect(linkIndex);
+    console.log(item.email);
     var mailOptions = {
       from: 'nhattuannguyenuit@gmail.com',
       to: item.email,
