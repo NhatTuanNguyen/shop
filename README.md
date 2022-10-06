@@ -29,4 +29,4 @@ Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-
 
 ## Contact
 
-Email: [Nguyen Nhat Tuan](mailto:nhattuannguyen12c6@gmail.com?subject=[Github])
+Email: [nhattuannguyen12c6@gmail.com](mailto:nhattuannguyen12c6@gmail.com?subject=[Github])
