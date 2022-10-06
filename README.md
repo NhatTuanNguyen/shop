@@ -18,8 +18,6 @@ Use the package manager [npm](https://docs.npmjs.com/downloading-and-installing-
 
 2. Install NPM packages
 
--   API:
-
 ```bash
     cd shop & npm install
 ```
