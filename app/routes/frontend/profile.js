@@ -6,11 +6,12 @@ const paramsHelper = require(__path_helpers + 'params');
 
 const layoutfrontend = __path_views_frontend + 'frontend';
 const folderView = __path_views_frontend + 'pages/profile/';
-const linkIndex = '/profile'
+const linkIndex = '/profile';
+const middleAuthentication = require(__path_middleware + 'auth');
 
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/',middleAuthentication, function (req, res, next) {
  
   res.render(`${folderView}index`, {
     layout: layoutfrontend,
