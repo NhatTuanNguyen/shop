@@ -7,15 +7,18 @@ const paramsHelper = require(__path_helpers + 'params');
 const layoutfrontend = __path_views_frontend + 'frontend';
 const folderView = __path_views_frontend + 'pages/profile/';
 const linkIndex = '/profile';
-const middleAuthentication = require(__path_middleware + 'auth');
-
+const linkLogin = '/auth/login';
 
 /* GET home page. */
-router.get('/',middleAuthentication, function (req, res, next) {
- 
-  res.render(`${folderView}index`, {
-    layout: layoutfrontend,
-  });
+router.get('/', function (req, res, next) {
+  if(req.isAuthenticated()){
+    res.render(`${folderView}index`, {
+      layout: layoutfrontend,
+    });
+  } else {
+    res.redirect(linkLogin);
+  }
+  
 });
 
 router.post('/', async function (req, res, next) {
